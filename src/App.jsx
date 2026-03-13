@@ -1,0 +1,1150 @@
+import React, { useState, useEffect, useRef } from "react";
+
+/* ========================================
+   NOVALIS FERMETURE & MENUISERIE
+   Site professionnel - 4 pages
+   ======================================== */
+
+const C = {
+  navy: "#0C2340",
+  navyLight: "#153660",
+  anthracite: "#3A3A3A",
+  anthraciteMed: "#5A5A5A",
+  accent: "#E8982B",
+  accentHover: "#D48A1F",
+  accentLight: "#FEF5E7",
+  lightBg: "#F5F6F8",
+  warmWhite: "#FAFBFC",
+  white: "#FFFFFF",
+  dark: "#111111",
+  text: "#2A2A2A",
+  textMed: "#5C5C5C",
+  textLight: "#8A8A8A",
+  border: "rgba(0,0,0,0.06)",
+  success: "#2D8F4E",
+};
+
+function AnimatedCounter({ end, suffix = "", duration = 2000 }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const started = useRef(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !started.current) {
+        started.current = true;
+        const t0 = Date.now();
+        const run = () => {
+          const p = Math.min((Date.now() - t0) / duration, 1);
+          setCount(Math.floor((1 - Math.pow(1 - p, 3)) * end));
+          if (p < 1) requestAnimationFrame(run);
+        };
+        run();
+      }
+    }, { threshold: 0.5 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [end, duration]);
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
+function SectionLabel({ children }) {
+  return (
+    <span style={{ color: C.accent, fontWeight: 700, fontSize: 12, textTransform: "uppercase", letterSpacing: 3, display: "inline-block", marginBottom: 12 }}>
+      {children}
+    </span>
+  );
+}
+
+function SectionTitle({ children, light }) {
+  return (
+    <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 42, fontWeight: 400, lineHeight: 1.15, color: light ? C.white : C.navy, marginBottom: 16 }}>
+      {children}
+    </h2>
+  );
+}
+
+function Btn({ children, variant = "primary", style: s = {}, onClick }) {
+  const base = { border: "none", padding: "15px 34px", borderRadius: 50, fontWeight: 600, fontSize: 15, cursor: "pointer", transition: "all 0.3s", letterSpacing: 0.3, display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "inherit", textDecoration: "none" };
+  const variants = {
+    primary: { ...base, background: C.accent, color: C.white },
+    outline: { ...base, background: "transparent", color: C.navy, border: `2px solid ${C.navy}` },
+    outlineLight: { ...base, background: "transparent", color: C.white, border: "2px solid rgba(255,255,255,0.5)" },
+    white: { ...base, background: C.white, color: C.navy },
+  };
+  return <button style={{ ...variants[variant], ...s }} onClick={onClick}>{children}</button>;
+}
+
+/* ========== NAVIGATION ========== */
+
+function Header({ page, setPage, scrolled, headerVisible }) {
+  const [mobile, setMobile] = useState(false);
+  const navItems = [
+    { id: "accueil", label: "Accueil" },
+    { id: "services", label: "Services" },
+    { id: "apropos", label: "À propos" },
+    { id: "contact", label: "Contact" },
+  ];
+
+  return (
+    <header style={{
+      position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
+      background: "rgba(255,255,255,0.97)",
+      backdropFilter: "blur(16px)",
+      boxShadow: scrolled ? "0 1px 12px rgba(0,0,0,0.08)" : "0 1px 20px rgba(0,0,0,0.04)",
+      transition: "all 0.4s ease", borderBottom: `1px solid ${C.border}`,
+      transform: headerVisible ? "translateY(0)" : "translateY(-100%)"
+    }}>
+      <div style={{ maxWidth: 1240, margin: "0 auto", padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: scrolled ? 70 : 140, transition: "height 0.4s ease" }}>
+        <div style={{ cursor: "pointer", display: "flex", alignItems: "center" }} onClick={() => setPage("accueil")}>
+          <img src="/logo-novalis1.png" alt="Novalis Fermeture et Menuiserie" style={{ height: scrolled ? 50 : 130, width: "auto", transition: "all 0.4s ease" }} />
+        </div>
+
+        <nav className="desktop-nav" style={{ display: "flex", alignItems: "center", gap: 48 }}>
+          {navItems.map(n => (
+            <button key={n.id} onClick={() => setPage(n.id)} style={{
+              background: "transparent",
+              color: page === n.id ? C.accent : C.anthracite,
+              border: "none", borderBottom: page === n.id ? `2px solid ${C.accent}` : "2px solid transparent",
+              padding: scrolled ? "7px 4px" : "9px 4px", borderRadius: 0, fontWeight: 600, fontSize: scrolled ? 13 : 14,
+              cursor: "pointer", transition: "all 0.3s", fontFamily: "inherit"
+            }}>
+              {n.label}
+            </button>
+          ))}
+        </nav>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <Btn onClick={() => setPage("contact")} style={{ padding: scrolled ? "8px 18px" : "10px 24px", fontSize: scrolled ? 12 : 13 }}>Devis gratuit</Btn>
+          <button className="mobile-menu-btn" onClick={() => setMobile(!mobile)} style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: 8, flexDirection: "column", gap: 5 }}>
+            <span style={{ width: 24, height: 2, background: C.dark, display: "block", borderRadius: 2 }} />
+            <span style={{ width: 24, height: 2, background: C.dark, display: "block", borderRadius: 2 }} />
+            <span style={{ width: 18, height: 2, background: C.dark, display: "block", borderRadius: 2 }} />
+          </button>
+        </div>
+      </div>
+
+      {mobile && (
+        <div style={{ background: C.white, padding: "12px 32px 24px", borderTop: `1px solid ${C.border}`, animation: "fadeIn 0.3s" }}>
+          {navItems.map(n => (
+            <div key={n.id} onClick={() => { setPage(n.id); setMobile(false); }}
+              style={{ padding: "14px 0", borderBottom: `1px solid ${C.border}`, fontWeight: 600, cursor: "pointer", color: page === n.id ? C.accent : C.text }}>
+              {n.label}
+            </div>
+          ))}
+          <Btn onClick={() => { setPage("contact"); setMobile(false); }} style={{ width: "100%", marginTop: 16, justifyContent: "center" }}>Demander un devis</Btn>
+        </div>
+      )}
+    </header>
+  );
+}
+
+function Footer({ setPage }) {
+  return (
+    <footer style={{ background: C.navy, color: C.white, padding: "72px 32px 32px" }}>
+      <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 48, marginBottom: 56 }}>
+          <div>
+            <img src="/logo-novalis.png" alt="Novalis" style={{ height: 100, width: "auto", marginBottom: 20 }} />
+            <p style={{ fontSize: 14, opacity: 0.6, lineHeight: 1.8 }}>
+              Spécialiste de la menuiserie et des fermetures sur mesure. Installation et rénovation dans le Pays de Montbéliard et alentours.
+            </p>
+          </div>
+
+          <div>
+            <h4 style={{ fontWeight: 700, fontSize: 15, marginBottom: 20 }}>Navigation</h4>
+            {[["Accueil","accueil"],["Services","services"],["À propos","apropos"],["Contact","contact"]].map(([l,id]) => (
+              <span key={id} onClick={() => setPage(id)} style={{ display: "block", color: "rgba(255,255,255,0.55)", fontSize: 14, padding: "5px 0", cursor: "pointer", transition: "color 0.3s" }}
+                onMouseEnter={e => e.target.style.color = C.accent} onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.55)"}>{l}</span>
+            ))}
+          </div>
+
+          <div>
+            <h4 style={{ fontWeight: 700, fontSize: 15, marginBottom: 20 }}>Nos services</h4>
+            {["Fenêtres PVC & Aluminium", "Portes d'entrée", "Volets roulants & battants", "Portails & clôtures", "Baies vitrées", "Rénovation énergétique"].map(s => (
+              <span key={s} style={{ display: "block", color: "rgba(255,255,255,0.55)", fontSize: 14, padding: "5px 0" }}>{s}</span>
+            ))}
+          </div>
+
+          <div>
+            <h4 style={{ fontWeight: 700, fontSize: 15, marginBottom: 20 }}>Contact</h4>
+            <div style={{ color: "rgba(255,255,255,0.55)", fontSize: 14, lineHeight: 2.2 }}>
+              <div>- Pays de Montbéliard</div>
+              <div>- 03 63 11 04 67</div>
+              <div>- contact@novalis-menuiserie.fr</div>
+            </div>
+            <Btn variant="primary" style={{ marginTop: 20, padding: "10px 24px", fontSize: 13 }} onClick={() => setPage("contact")}>
+              Devis gratuit →
+            </Btn>
+          </div>
+        </div>
+
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 24, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+          <p style={{ fontSize: 12, opacity: 0.35 }}>© 2026 Novalis Fermeture & Menuiserie — Tous droits réservés</p>
+          <div style={{ display: "flex", gap: 20 }}>
+            <span onClick={() => setPage("mentions")} style={{ fontSize: 12, opacity: 0.35, cursor: "pointer", transition: "opacity 0.3s" }} onMouseEnter={e => e.target.style.opacity = 0.7} onMouseLeave={e => e.target.style.opacity = 0.35}>Mentions légales</span>
+            <span onClick={() => setPage("confidentialite")} style={{ fontSize: 12, opacity: 0.35, cursor: "pointer", transition: "opacity 0.3s" }} onMouseEnter={e => e.target.style.opacity = 0.7} onMouseLeave={e => e.target.style.opacity = 0.35}>Politique de confidentialité</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ========== PAGE ACCUEIL ========== */
+
+function PageAccueil({ setPage }) {
+  const [heroSlide, setHeroSlide] = useState(0);
+  const slides = [
+    { title: "Novalis Fermeture\n& Menuiserie", sub: "Spécialiste de la menuiserie et des fermetures sur mesure. Installation, rénovation et conseil personnalisé.", cta: "Demander un devis", img: "/1.png" },
+    { title: "Fenêtres &\nBaies vitrées", sub: "PVC, aluminium, sur mesure — performance thermique et acoustique pour votre confort quotidien.", cta: "Découvrir", img: "/2.png" },
+    { title: "Portes, portails\n& fermetures", sub: "Sécurité, isolation et élégance. Des solutions adaptées à chaque projet.", cta: "Nos services", img: "/3.png" },
+  ];
+
+  useEffect(() => {
+    const t = setInterval(() => setHeroSlide(p => (p + 1) % slides.length), 6000);
+    return () => clearInterval(t);
+  }, []);
+
+  const expertises = [
+    { title: "Fenêtres & Baies vitrées", desc: "PVC, aluminium, sur mesure. Maximisez la lumière naturelle et l'isolation de votre habitat avec des menuiseries haute performance.", items: ["Fenêtres PVC", "Fenêtres aluminium", "Baies vitrées", "Sur mesure"], img: "/6.jpg" },
+    { title: "Portes & Portails", desc: "Porte d'entrée, portail aluminium, motorisation. Sécurisez et embellissez les accès de votre maison.", items: ["Portes d'entrée", "Portails aluminium", "Motorisation", "Clôtures"], img: "/4.webp" },
+    { title: "Volets & Fermetures", desc: "Volets roulants, volets battants, stores. Protégez-vous du soleil, du froid et des regards indiscrets.", items: ["Volets roulants", "Volets battants", "Stores", "Moustiquaires"], img: "/5.jpg" },
+  ];
+
+
+  return (
+    <>
+      {/* BANDEAU PROMO */}
+      <div style={{
+        background: "linear-gradient(90deg, #E8982B 0%, #D4841A 50%, #E8982B 100%)",
+        padding: "12px 32px", textAlign: "center", position: "relative", overflow: "hidden",
+        marginTop: 140
+      }}>
+        <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.03) 10px, rgba(255,255,255,0.03) 20px)" }} />
+        <div style={{ position: "relative", zIndex: 2, display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
+          <span style={{ background: "#fff", color: "#D4841A", fontWeight: 800, fontSize: 14, padding: "4px 14px", borderRadius: 6, letterSpacing: 1 }}>OFFRE EXCEPTIONNELLE</span>
+          <span style={{ color: "#fff", fontWeight: 700, fontSize: 16 }}>
+            -30% sur toutes les fermetures et menuiseries
+          </span>
+          <span style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}>Offre limitée</span>
+          <button onClick={() => setPage("contact")} style={{
+            background: "#fff", color: "#D4841A", border: "none", borderRadius: 50, padding: "7px 22px",
+            fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit", transition: "all 0.3s"
+          }}
+            onMouseEnter={ev => { ev.target.style.background = C.navy; ev.target.style.color = "#fff"; }}
+            onMouseLeave={ev => { ev.target.style.background = "#fff"; ev.target.style.color = "#D4841A"; }}
+          >En profiter →</button>
+        </div>
+      </div>
+
+      {/* HERO */}
+      <section style={{
+        background: `linear-gradient(135deg, rgba(12,35,64,0.85) 0%, rgba(26,58,92,0.8) 40%, rgba(12,35,64,0.9) 100%), url(${slides[heroSlide].img}) center/cover no-repeat`,
+        minHeight: 620, display: "flex", alignItems: "center",
+        position: "relative", overflow: "hidden",
+        transition: "background-image 0.8s ease"
+      }}>
+        <div style={{ position: "absolute", inset: 0, opacity: 0.04, background: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h60v60H0z' fill='none'/%3E%3Cpath d='M30 0v60M0 30h60' stroke='%23fff' stroke-width='.5'/%3E%3C/svg%3E\")" }} />
+        <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, background: `radial-gradient(circle, rgba(232,152,43,0.1) 0%, transparent 65%)`, borderRadius: "50%" }} />
+
+        {/* BADGE PROMO flottant */}
+        <div style={{
+          position: "absolute", top: 40, right: 40, zIndex: 10,
+          background: "linear-gradient(135deg, #E8982B 0%, #D4841A 100%)",
+          borderRadius: "50%", width: 130, height: 130,
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          boxShadow: "0 8px 30px rgba(232,152,43,0.4)",
+          animation: "promoPulse 2s ease-in-out infinite",
+          border: "3px solid rgba(255,255,255,0.3)"
+        }}>
+          <span style={{ fontSize: 36, fontWeight: 800, color: "#fff", lineHeight: 1 }}>-30%</span>
+          <span style={{ fontSize: 10, color: "rgba(255,255,255,0.9)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, marginTop: 4 }}>sur tout</span>
+        </div>
+
+        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "100px 32px 80px", position: "relative", zIndex: 2, width: "100%" }}>
+          <div key={heroSlide} style={{ animation: "heroTextIn 0.7s ease" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(232,152,43,0.12)", borderRadius: 50, padding: "8px 20px", marginBottom: 32, border: "1px solid rgba(232,152,43,0.2)" }}>
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: C.accent }} />
+              <span style={{ color: C.accent, fontSize: 13, fontWeight: 600 }}>-30% sur toutes les fermetures et menuiseries</span>
+            </div>
+
+            <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 58, fontWeight: 400, color: C.white, lineHeight: 1.08, maxWidth: 700, marginBottom: 24, whiteSpace: "pre-line" }}>
+              {slides[heroSlide].title}
+            </h1>
+            <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 18, lineHeight: 1.7, maxWidth: 520, marginBottom: 44 }}>
+              {slides[heroSlide].sub}
+            </p>
+
+            <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+              <Btn onClick={() => setPage("contact")} style={{ fontSize: 16, padding: "17px 38px" }}>
+                Demander un devis →
+              </Btn>
+              <Btn variant="outlineLight" onClick={() => setPage("services")}>Nos services</Btn>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: 10, marginTop: 56 }}>
+            {slides.map((_, i) => (
+              <button key={i} onClick={() => setHeroSlide(i)} style={{
+                width: i === heroSlide ? 36 : 10, height: 10, borderRadius: i === heroSlide ? 5 : "50%",
+                background: i === heroSlide ? C.accent : "rgba(255,255,255,0.25)",
+                border: "none", cursor: "pointer", transition: "all 0.4s"
+              }} />
+            ))}
+          </div>
+        </div>
+
+        <div className="hero-badge" style={{ position: "absolute", right: 40, bottom: 40, display: "flex", gap: 16 }}>
+          {[
+            { n: "98%", s: "clients satisfaits" },
+            { n: "10 ans", s: "de garantie" },
+            { n: "Certifié", s: "poseurs qualifiés" },
+          ].map((b, i) => (
+            <div key={i} style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(10px)", borderRadius: 14, padding: "16px 20px", border: "1px solid rgba(255,255,255,0.08)", textAlign: "center" }}>
+              <div style={{ fontSize: 22, fontWeight: 800, color: C.accent }}>{b.n}</div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", marginTop: 4 }}>{b.s}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* EXPERTISES */}
+      <section style={{ padding: "100px 32px", background: C.white }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <SectionLabel>Nos domaines d'expertise</SectionLabel>
+            <SectionTitle>Des solutions pour chaque ouverture</SectionTitle>
+            <p style={{ color: C.textLight, fontSize: 17, maxWidth: 580, margin: "0 auto", lineHeight: 1.7 }}>
+              De la fenêtre au portail, nous intervenons sur l'ensemble de vos menuiseries et fermetures pour améliorer votre confort et votre sécurité.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 28 }}>
+            {expertises.map((e, i) => (
+              <div key={i} style={{
+                background: C.warmWhite, borderRadius: 20, padding: "40px 32px", border: `1px solid ${C.border}`,
+                transition: "all 0.4s", cursor: "pointer"
+              }}
+                onMouseEnter={ev => { ev.currentTarget.style.transform = "translateY(-6px)"; ev.currentTarget.style.boxShadow = "0 20px 50px rgba(0,0,0,0.07)"; }}
+                onMouseLeave={ev => { ev.currentTarget.style.transform = ""; ev.currentTarget.style.boxShadow = ""; }}
+              >
+                <div style={{ height: 180, borderRadius: "16px 16px 0 0", overflow: "hidden", marginBottom: 20, margin: "-40px -32px 20px -32px", background: C.lightBg }}>
+                  <img src={e.img} alt={e.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} onError={ev => ev.target.style.display = "none"} />
+                </div>
+                <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 24, color: C.navy, marginBottom: 12 }}>{e.title}</h3>
+                <p style={{ color: C.textMed, fontSize: 15, lineHeight: 1.7, marginBottom: 20 }}>{e.desc}</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {e.items.map(it => (
+                    <span key={it} style={{ background: C.accentLight, color: C.accent, fontSize: 12, fontWeight: 600, padding: "6px 14px", borderRadius: 50 }}>{it}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: 48 }}>
+            <Btn variant="outline" onClick={() => setPage("services")}>Voir tous nos services →</Btn>
+          </div>
+        </div>
+      </section>
+
+      {/* COMMENT CA MARCHE */}
+      <section style={{ padding: "100px 32px", background: C.lightBg }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <SectionLabel>Notre processus</SectionLabel>
+            <SectionTitle>Comment ça marche ?</SectionTitle>
+            <p style={{ color: C.textLight, fontSize: 17, maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
+              Un accompagnement simple et transparent, de votre premier appel jusqu'à la fin des travaux.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 32, position: "relative" }}>
+            {[
+              { step: "01", title: "Prise de contact", desc: "Appelez-nous ou remplissez notre formulaire. Nous vous recontactons sous 24h pour discuter de votre projet.", color: "#E8F4FD" },
+              { step: "02", title: "Visite & Devis", desc: "Un technicien se déplace chez vous gratuitement pour prendre les mesures et vous établir un devis détaillé.", color: "#FEF5E7" },
+              { step: "03", title: "Fabrication & Pose", desc: "Vos menuiseries sont fabriquées sur mesure puis installées par nos poseurs qualifiés, dans le respect de votre domicile.", color: "#E8F5E9" },
+              { step: "04", title: "Garantie & Suivi", desc: "Profitez de votre garantie et de notre service après-vente réactif. Nous restons disponibles pour toute question.", color: "#F3E8FF" },
+            ].map((item, i) => (
+              <div key={i} style={{ textAlign: "center", position: "relative" }}>
+                <div style={{
+                  width: 80, height: 80, borderRadius: "50%", background: item.color,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  margin: "0 auto 24px", border: `3px solid ${C.accent}`,
+                  boxShadow: "0 4px 15px rgba(0,0,0,0.06)"
+                }}>
+                  <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 28, color: C.accent, fontWeight: 700 }}>{item.step}</span>
+                </div>
+                {i < 3 && <div className="step-line" style={{ position: "absolute", top: 40, left: "60%", width: "80%", height: 2, background: `linear-gradient(90deg, ${C.accent}, rgba(232,152,43,0.2))`, zIndex: 0 }} />}
+                <h4 style={{ fontSize: 18, fontWeight: 700, color: C.navy, marginBottom: 10 }}>{item.title}</h4>
+                <p style={{ fontSize: 14, color: C.textMed, lineHeight: 1.7 }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: 48 }}>
+            <Btn onClick={() => setPage("contact")} style={{ fontSize: 16, padding: "17px 38px" }}>Démarrer mon projet →</Btn>
+          </div>
+        </div>
+      </section>
+
+      {/* AVIS CLIENTS */}
+      <section style={{ padding: "100px 32px", background: C.white }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <SectionLabel>Témoignages</SectionLabel>
+            <SectionTitle>Ce que disent nos clients</SectionTitle>
+            <p style={{ color: C.textLight, fontSize: 17, maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
+              La satisfaction de nos clients est notre meilleure carte de visite.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 28 }}>
+            {[
+              { name: "Marie D.", loc: "Montbéliard", stars: 5, text: "Travail impeccable du début à la fin. Nos nouvelles fenêtres ont transformé notre maison. L'équipe est ponctuelle, propre et très professionnelle. Je recommande vivement !" },
+              { name: "Jean-Pierre L.", loc: "Belfort", stars: 5, text: "Nous avons fait poser une baie vitrée et des volets roulants. Le résultat est magnifique et l'isolation est nettement améliorée. Devis respecté, aucune mauvaise surprise." },
+              { name: "Sophie & Marc R.", loc: "Héricourt", stars: 5, text: "Très satisfaits de notre porte d'entrée et du portail motorisé. L'accompagnement a été top, du conseil jusqu'à l'installation. Merci à toute l'équipe Novalis !" },
+              { name: "Laurent B.", loc: "Audincourt", stars: 5, text: "Rénovation complète des menuiseries de notre maison. Un vrai changement au niveau du confort thermique et phonique. Rapport qualité-prix excellent." },
+              { name: "Isabelle M.", loc: "Sochaux", stars: 4, text: "Pose de volets battants sur notre maison ancienne. Le rendu est superbe et respecte parfaitement le style de la façade. Équipe à l'écoute et de bon conseil." },
+              { name: "Thomas G.", loc: "Valentigney", stars: 5, text: "Deuxième fois que je fais appel à Novalis, et toujours aussi satisfait. Cette fois pour un portail aluminium motorisé. Installation rapide et soignée." },
+            ].map((avis, i) => (
+              <div key={i} style={{
+                background: C.lightBg, borderRadius: 20, padding: "32px 28px",
+                border: `1px solid ${C.border}`, transition: "all 0.4s", position: "relative"
+              }}
+                onMouseEnter={ev => { ev.currentTarget.style.transform = "translateY(-4px)"; ev.currentTarget.style.boxShadow = "0 12px 35px rgba(0,0,0,0.06)"; }}
+                onMouseLeave={ev => { ev.currentTarget.style.transform = ""; ev.currentTarget.style.boxShadow = ""; }}
+              >
+                <div style={{ display: "flex", gap: 2, marginBottom: 16 }}>
+                  {Array.from({ length: 5 }).map((_, s) => (
+                    <span key={s} style={{ fontSize: 18, color: s < avis.stars ? C.accent : "#ddd" }}>&#9733;</span>
+                  ))}
+                </div>
+                <p style={{ fontSize: 15, color: C.textMed, lineHeight: 1.8, marginBottom: 20, fontStyle: "italic" }}>"{avis.text}"</p>
+                <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 16 }}>
+                  <p style={{ fontWeight: 700, fontSize: 15, color: C.navy }}>{avis.name}</p>
+                  <p style={{ fontSize: 13, color: C.textLight, marginTop: 2 }}>{avis.loc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: 48 }}>
+            <Btn variant="outline" onClick={() => setPage("avis")}>Laisser un avis →</Btn>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "100px 32px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: "-30%", right: "-10%", width: 500, height: 500, background: `radial-gradient(circle, rgba(232,152,43,0.1) 0%, transparent 65%)`, borderRadius: "50%" }} />
+        <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
+          <div style={{ display: "inline-block", background: "linear-gradient(135deg, #E8982B 0%, #D4841A 100%)", borderRadius: 12, padding: "14px 32px", marginBottom: 32, boxShadow: "0 4px 20px rgba(232,152,43,0.3)" }}>
+            <span style={{ color: "#fff", fontWeight: 800, fontSize: 22 }}>-30% sur toutes les fermetures et menuiseries</span>
+          </div>
+          <SectionTitle light>Profitez de notre offre exceptionnelle</SectionTitle>
+          <p style={{ fontSize: 18, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, maxWidth: 520, margin: "0 auto 44px" }}>
+            Offre limitée sur l'ensemble de nos produits et services. Demandez votre devis gratuit dès maintenant et bénéficiez de -30% sur votre projet.
+          </p>
+          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+            <Btn onClick={() => setPage("contact")} style={{ fontSize: 16, padding: "17px 42px" }}>J'en profite maintenant →</Btn>
+            <Btn variant="outlineLight" onClick={() => setPage("contact")}>Nous appeler</Btn>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+/* ========== PAGE SERVICES ========== */
+
+function PageServices({ setPage }) {
+  const categories = [
+    {
+      title: "Menuiserie extérieure",
+      desc: "Des menuiseries haute performance pour votre confort thermique, acoustique et votre sécurité.",
+      services: [
+        { name: "Fenêtres PVC", desc: "Excellent rapport qualité-prix, isolation thermique remarquable, entretien minimal. Large choix de styles et coloris." },
+        { name: "Fenêtres aluminium", desc: "Profilés fins pour un maximum de lumière, durabilité exceptionnelle, finitions haut de gamme et design contemporain." },
+        { name: "Baies vitrées", desc: "Ouvrez votre intérieur sur l'extérieur. Baies coulissantes, à galandage ou levantes-coulissantes, aluminium ou PVC." },
+        { name: "Portes d'entrée", desc: "Premier élément visible de votre maison. PVC, aluminium ou mixte, avec des niveaux de sécurité renforcés." },
+      ]
+    },
+    {
+      title: "Fermetures",
+      desc: "Protégez votre intérieur avec des fermetures modernes, performantes et esthétiques.",
+      services: [
+        { name: "Volets roulants", desc: "Motorisés ou manuels, en aluminium ou PVC. Isolation renforcée et sécurité anti-effraction." },
+        { name: "Volets battants", desc: "Charme authentique et protection efficace. Aluminium ou bois, large choix de coloris et persiennes." },
+        { name: "Stores extérieurs", desc: "Stores bannes, stores verticaux ou screens pour une protection solaire élégante et sur mesure." },
+        { name: "Moustiquaires", desc: "Profitez de l'air frais sans les insectes. Enroulables, fixes ou plissées, adaptées à toutes vos ouvertures." },
+      ]
+    },
+    {
+      title: "Portails & Clôtures",
+      desc: "Sécurisez et embellissez l'accès à votre propriété avec des portails et clôtures de qualité.",
+      services: [
+        { name: "Portails aluminium", desc: "Légers, robustes et sans entretien. Battants ou coulissants, large choix de designs et couleurs." },
+        { name: "Portails motorisés", desc: "Confort au quotidien avec une motorisation fiable et silencieuse. Compatible avec toutes nos gammes." },
+        { name: "Clôtures", desc: "Délimitez votre terrain avec élégance. Aluminium, composite ou PVC, designs modernes ou classiques." },
+      ]
+    },
+    {
+      title: "Installation & Rénovation",
+      desc: "Un accompagnement complet pour vos projets neufs comme pour la rénovation de l'existant.",
+      services: [
+        { name: "Pose sur mesure", desc: "Chaque ouverture est unique. Nos techniciens réalisent des prises de cotes précises pour une installation parfaite." },
+        { name: "Remplacement de menuiseries", desc: "Modernisez vos anciennes fenêtres, portes ou volets. Dépose soignée et pose dans les règles de l'art." },
+        { name: "Rénovation énergétique", desc: "Améliorez la performance énergétique de votre habitat. Nous vous guidons sur les aides financières (MaPrimeRénov', CEE...)." },
+      ]
+    },
+  ];
+
+  return (
+    <>
+      <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "180px 32px 90px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, opacity: 0.03, background: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h60v60H0z' fill='none'/%3E%3Cpath d='M30 0v60M0 30h60' stroke='%23fff' stroke-width='.5'/%3E%3C/svg%3E\")" }} />
+        <div style={{ maxWidth: 1240, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
+          <SectionLabel>Nos services</SectionLabel>
+          <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 50, color: C.white, marginBottom: 16 }}>Des solutions complètes pour votre habitat</h1>
+          <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 18, maxWidth: 600, margin: "0 auto", lineHeight: 1.7 }}>
+            Menuiserie extérieure, fermetures, portails et rénovation : découvrez l'ensemble de nos prestations.
+          </p>
+        </div>
+      </section>
+
+      {categories.map((cat, ci) => (
+        <section key={ci} style={{ padding: "80px 32px", background: ci % 2 === 0 ? C.white : C.lightBg }}>
+          <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+            <div style={{ marginBottom: 12 }}>
+              <SectionTitle>{cat.title}</SectionTitle>
+            </div>
+            <p style={{ color: C.textMed, fontSize: 17, lineHeight: 1.7, maxWidth: 700, marginBottom: 40 }}>{cat.desc}</p>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
+              {cat.services.map((s, si) => (
+                <div key={si} style={{
+                  background: ci % 2 === 0 ? C.warmWhite : C.white, borderRadius: 16, padding: "28px 24px",
+                  border: `1px solid ${C.border}`, transition: "all 0.3s"
+                }}
+                  onMouseEnter={ev => { ev.currentTarget.style.borderColor = C.accent; ev.currentTarget.style.transform = "translateY(-3px)"; }}
+                  onMouseLeave={ev => { ev.currentTarget.style.borderColor = C.border; ev.currentTarget.style.transform = ""; }}
+                >
+                  <div style={{ width: 40, height: 4, background: C.accent, borderRadius: 2, marginBottom: 16 }} />
+                  <h4 style={{ fontSize: 18, fontWeight: 700, color: C.navy, marginBottom: 10 }}>{s.name}</h4>
+                  <p style={{ fontSize: 14, color: C.textMed, lineHeight: 1.7 }}>{s.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ))}
+
+      <section style={{ background: C.accentLight, padding: "72px 32px" }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 36, color: C.navy, marginBottom: 16 }}>Un projet en tête ?</h2>
+          <p style={{ color: C.textMed, fontSize: 17, lineHeight: 1.7, maxWidth: 520, margin: "0 auto 36px" }}>
+            Décrivez-nous votre besoin et recevez un devis personnalisé sous 48h. C'est gratuit et sans engagement.
+          </p>
+          <Btn onClick={() => setPage("contact")} style={{ fontSize: 16, padding: "17px 42px" }}>Demander un devis gratuit →</Btn>
+        </div>
+      </section>
+    </>
+  );
+}
+
+/* ========== PAGE À PROPOS ========== */
+
+function PageAPropos({ setPage }) {
+  const valeurs = [
+    { title: "Qualité", desc: "Nous ne faisons aucun compromis sur la qualité des matériaux et de la pose. Chaque détail compte pour un résultat durable." },
+    { title: "Fiabilité", desc: "Respect des engagements, des délais et du budget. Vous pouvez compter sur nous du premier contact à la fin du chantier." },
+    { title: "Accompagnement client", desc: "Un interlocuteur unique vous guide à chaque étape : conseil, choix des produits, installation et suivi après-vente." },
+    { title: "Travail soigné", desc: "Nos techniciens interviennent avec rigueur et propreté, dans le respect total de votre domicile." },
+  ];
+
+  return (
+    <>
+      <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "180px 32px 90px", position: "relative" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
+          <SectionLabel>À propos</SectionLabel>
+          <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 50, color: C.white, marginBottom: 16 }}>Qui sommes-nous ?</h1>
+          <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 18, maxWidth: 600, margin: "0 auto", lineHeight: 1.7 }}>
+            Une entreprise à taille humaine, engagée pour la qualité et la satisfaction de ses clients.
+          </p>
+        </div>
+      </section>
+
+      <section style={{ padding: "100px 32px", background: C.white }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+            <div>
+              <SectionLabel>Notre histoire</SectionLabel>
+              <SectionTitle>L'expertise au service de votre habitat</SectionTitle>
+              <p style={{ color: C.textMed, fontSize: 16, lineHeight: 1.8, marginBottom: 20 }}>
+                <strong style={{ color: C.navy }}>Novalis Fermeture & Menuiserie</strong> est née de la passion du métier et de la volonté d'offrir à chaque client un service d'excellence. Implantée dans le <strong style={{ color: C.navy }}>Pays de Montbéliard</strong>, notre entreprise intervient sur l'ensemble du territoire : Belfort, Héricourt, Audincourt et les communes environnantes.
+              </p>
+              <p style={{ color: C.textMed, fontSize: 16, lineHeight: 1.8, marginBottom: 20 }}>
+                Forts de plus de <strong style={{ color: C.navy }}>15 années d'expérience</strong>, nous maîtrisons chaque étape de votre projet : du conseil initial à la pose finale, en passant par la sélection rigoureuse des meilleurs produits.
+              </p>
+              <p style={{ color: C.textMed, fontSize: 16, lineHeight: 1.8 }}>
+                Notre engagement : des solutions sur mesure, performantes et esthétiques, avec un rapport qualité-prix irréprochable.
+              </p>
+            </div>
+            <div style={{ borderRadius: 24, height: 480, position: "relative", overflow: "hidden" }}>
+              <img src="/7.png" alt="Réalisation Novalis" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ position: "absolute", top: 20, right: 20, background: C.accent, color: C.white, borderRadius: 12, padding: "12px 20px", fontWeight: 700, fontSize: 14 }}>
+                Depuis 15+ ans
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ padding: "100px 32px", background: C.lightBg }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <SectionLabel>Nos valeurs</SectionLabel>
+            <SectionTitle>Ce qui nous guide au quotidien</SectionTitle>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24 }}>
+            {valeurs.map((v, i) => (
+              <div key={i} style={{ background: C.white, borderRadius: 16, padding: "36px 28px", border: `1px solid ${C.border}`, transition: "all 0.4s", textAlign: "center" }}
+                onMouseEnter={ev => { ev.currentTarget.style.transform = "translateY(-6px)"; ev.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.06)"; }}
+                onMouseLeave={ev => { ev.currentTarget.style.transform = ""; ev.currentTarget.style.boxShadow = ""; }}
+              >
+                <h4 style={{ fontSize: 20, fontWeight: 700, color: C.navy, marginBottom: 10 }}>{v.title}</h4>
+                <p style={{ fontSize: 14, color: C.textMed, lineHeight: 1.7 }}>{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section style={{ padding: "100px 32px", background: C.white }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", textAlign: "center" }}>
+          <SectionLabel>Zone d'intervention</SectionLabel>
+          <SectionTitle>Nous intervenons près de chez vous</SectionTitle>
+          <p style={{ color: C.textMed, fontSize: 17, maxWidth: 640, margin: "0 auto 48px", lineHeight: 1.7 }}>
+            Novalis intervient dans tout le <strong style={{ color: C.navy }}>Pays de Montbéliard</strong> et ses alentours. Déplacement gratuit pour une étude personnalisée.
+          </p>
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 12, marginBottom: 48 }}>
+            {["Montbéliard", "Belfort", "Héricourt", "Audincourt", "Sochaux", "Valentigney", "Delle", "Beaucourt", "Bavans", "Voujeaucourt"].map(v => (
+              <span key={v} style={{ background: C.lightBg, padding: "10px 22px", borderRadius: 50, fontSize: 14, fontWeight: 600, color: C.navy, border: `1px solid ${C.border}` }}>
+                {v}
+              </span>
+            ))}
+          </div>
+          <p style={{ color: C.textLight, fontSize: 15 }}>Et toutes les communes environnantes — <strong style={{ color: C.accent, cursor: "pointer" }} onClick={() => setPage("contact")}>Contactez-nous</strong> pour vérifier.</p>
+        </div>
+      </section>
+
+      <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "80px 32px" }}>
+        <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+          <SectionTitle light>Envie de travailler avec nous ?</SectionTitle>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 17, lineHeight: 1.7, marginBottom: 36 }}>
+            Faites-nous confiance pour votre prochain projet de menuiserie ou de fermeture.
+          </p>
+          <Btn onClick={() => setPage("contact")} style={{ fontSize: 16, padding: "17px 42px" }}>Demander un devis gratuit →</Btn>
+        </div>
+      </section>
+    </>
+  );
+}
+
+/* ========== PAGE CONTACT ========== */
+
+function PageContact() {
+  const [form, setForm] = useState({ nom: "", tel: "", email: "", ville: "", projet: "", message: "" });
+  const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!form.nom || !form.tel || !form.email) return;
+    setSending(true);
+    try {
+      await fetch("https://formspree.io/f/mzdjrowq", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "DEMANDE DE DEVIS",
+          nom: form.nom,
+          telephone: form.tel,
+          email: form.email,
+          ville: form.ville || "Non renseignée",
+          projet: form.projet || "Non précisé",
+          message: form.message || "Aucun message"
+        })
+      });
+      setSent(true);
+    } catch (err) {
+      alert("Erreur lors de l'envoi. Veuillez réessayer.");
+    }
+    setSending(false);
+  };
+
+  const inputStyle = {
+    width: "100%", padding: "14px 18px", borderRadius: 10, border: "1px solid #ddd",
+    fontSize: 15, fontFamily: "inherit", transition: "border 0.3s", outline: "none",
+    background: C.warmWhite
+  };
+
+  return (
+    <>
+      <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "180px 32px 90px" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
+          <SectionLabel>Contact</SectionLabel>
+          <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 50, color: C.white, marginBottom: 16 }}>Demandez votre devis gratuit</h1>
+          <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 18, maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
+            Décrivez-nous votre projet et recevez une réponse personnalisée sous 48 heures.
+          </p>
+        </div>
+      </section>
+
+      <section style={{ padding: "80px 32px", background: C.lightBg }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: 48, alignItems: "start" }}>
+            <div style={{ background: C.white, borderRadius: 20, padding: "44px 40px", boxShadow: "0 4px 30px rgba(0,0,0,0.04)", border: `1px solid ${C.border}` }}>
+              {sent ? (
+                <div style={{ textAlign: "center", padding: "48px 0" }}>
+                  <div style={{ fontSize: 56, marginBottom: 20 }}>✅</div>
+                  <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 28, color: C.navy, marginBottom: 12 }}>Demande envoyée !</h3>
+                  <p style={{ color: C.textMed, fontSize: 16, lineHeight: 1.7 }}>Merci pour votre confiance. Notre équipe vous recontactera dans les 48 heures.</p>
+                </div>
+              ) : (
+                <>
+                  <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 26, color: C.navy, marginBottom: 8 }}>Formulaire de devis</h3>
+                  <p style={{ color: C.textLight, fontSize: 14, marginBottom: 32 }}>Tous les champs marqués * sont obligatoires</p>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+                    <div>
+                      <label style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6, display: "block" }}>Nom complet *</label>
+                      <input style={inputStyle} placeholder="Jean Dupont" value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })}
+                        onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = "#ddd"} />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6, display: "block" }}>Téléphone *</label>
+                      <input style={inputStyle} placeholder="06 00 00 00 00" value={form.tel} onChange={e => setForm({ ...form, tel: e.target.value })}
+                        onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = "#ddd"} />
+                    </div>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+                    <div>
+                      <label style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6, display: "block" }}>Email *</label>
+                      <input style={inputStyle} placeholder="jean@exemple.fr" type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
+                        onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = "#ddd"} />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6, display: "block" }}>Ville</label>
+                      <input style={inputStyle} placeholder="Montbéliard" value={form.ville} onChange={e => setForm({ ...form, ville: e.target.value })}
+                        onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = "#ddd"} />
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6, display: "block" }}>Type de projet</label>
+                    <select style={{ ...inputStyle, cursor: "pointer", appearance: "auto" }} value={form.projet} onChange={e => setForm({ ...form, projet: e.target.value })}>
+                      <option value="">Sélectionnez un type de projet</option>
+                      <option>Fenêtres PVC</option>
+                      <option>Fenêtres aluminium</option>
+                      <option>Baies vitrées</option>
+                      <option>Porte d'entrée</option>
+                      <option>Volets roulants</option>
+                      <option>Volets battants</option>
+                      <option>Portail</option>
+                      <option>Clôture</option>
+                      <option>Store</option>
+                      <option>Rénovation complète</option>
+                      <option>Autre</option>
+                    </select>
+                  </div>
+
+                  <div style={{ marginBottom: 24 }}>
+                    <label style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6, display: "block" }}>Décrivez votre projet</label>
+                    <textarea style={{ ...inputStyle, minHeight: 120, resize: "vertical" }}
+                      placeholder="Type de travaux, nombre d'ouvertures, dimensions approximatives..."
+                      value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}
+                      onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = "#ddd"} />
+                  </div>
+
+                  <Btn onClick={handleSubmit} style={{ width: "100%", justifyContent: "center", fontSize: 16, padding: "16px", opacity: (form.nom && form.tel && form.email && !sending) ? 1 : 0.5 }}>
+                    {sending ? "Envoi en cours..." : "Envoyer ma demande de devis →"}
+                  </Btn>
+                  <p style={{ textAlign: "center", fontSize: 12, color: C.textLight, marginTop: 12 }}>Gratuit et sans engagement — Réponse sous 48h</p>
+                </>
+              )}
+            </div>
+
+            <div>
+              <div style={{ background: C.white, borderRadius: 16, padding: "32px 28px", marginBottom: 20, border: `1px solid ${C.border}` }}>
+                <h4 style={{ fontSize: 18, fontWeight: 700, color: C.navy, marginBottom: 20 }}>Nos coordonnées</h4>
+                <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                  {[
+                    { label: "Téléphone", val: "03 63 11 04 67" },
+                    { label: "Email", val: "contact@novalis-menuiserie.fr" },
+                    { label: "Horaires", val: "Lun - Ven : 8h/ - 18h\n" },
+                  ].map((c, i) => (
+                    <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+                      <div>
+                        <div style={{ fontSize: 12, color: C.textLight, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>{c.label}</div>
+                        <div style={{ fontSize: 15, color: C.text, fontWeight: 500, whiteSpace: "pre-line", lineHeight: 1.5 }}>{c.val}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ background: C.accentLight, borderRadius: 16, padding: "28px", border: "1px solid rgba(232,152,43,0.15)" }}>
+                <h4 style={{ fontSize: 16, fontWeight: 700, color: C.accent, marginBottom: 8 }}>- Réponse rapide</h4>
+                <p style={{ fontSize: 14, color: C.textMed, lineHeight: 1.7 }}>
+                  Nous nous engageons à vous recontacter sous 48 heures ouvrées pour discuter de votre projet.
+                </p>
+              </div>
+
+              <div style={{ marginTop: 20, borderRadius: 16, overflow: "hidden", border: `1px solid ${C.border}` }}>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d42656.39893854584!2d6.7635!3d47.5103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479234a1a0a5b0c3%3A0x409ce34b30458d0!2sMontb%C3%A9liard!5e0!3m2!1sfr!2sfr!4v1710000000000!5m2!1sfr!2sfr"
+                  width="100%" height="200" style={{ border: 0, display: "block" }} allowFullScreen="" loading="lazy"
+                  title="Novalis Montbéliard"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+/* ========== PAGE AVIS ========== */
+
+function PageAvis({ setPage }) {
+  const [stars, setStars] = useState(0);
+  const [hoverStar, setHoverStar] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({ nom: "", ville: "", message: "" });
+
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!form.nom || stars === 0 || !form.message) return;
+    setSending(true);
+    try {
+      await fetch("https://formspree.io/f/mzdjrowq", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nom: form.nom,
+          ville: form.ville || "Non renseignée",
+          note: stars + " étoile(s) sur 5",
+          message: form.message
+        })
+      });
+      setSubmitted(true);
+    } catch (err) {
+      alert("Erreur lors de l'envoi. Veuillez réessayer.");
+    }
+    setSending(false);
+  };
+
+  return (
+    <>
+      <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "180px 32px 90px" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
+          <SectionLabel>Votre avis compte</SectionLabel>
+          <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 50, color: C.white, marginBottom: 16 }}>Laissez-nous votre avis</h1>
+          <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 18, maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
+            Votre retour nous aide à nous améliorer et à offrir le meilleur service possible.
+          </p>
+        </div>
+      </section>
+
+      <section style={{ padding: "80px 32px", background: C.white }}>
+        <div style={{ maxWidth: 640, margin: "0 auto" }}>
+          {submitted ? (
+            <div style={{ textAlign: "center", padding: "60px 32px", background: C.lightBg, borderRadius: 24, border: `1px solid ${C.border}` }}>
+              <div style={{ width: 80, height: 80, borderRadius: "50%", background: "#E8F5E9", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px", fontSize: 36 }}>
+                &#10003;
+              </div>
+              <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 32, color: C.navy, marginBottom: 16 }}>Merci pour votre avis !</h2>
+              <p style={{ color: C.textMed, fontSize: 16, lineHeight: 1.7, marginBottom: 32 }}>
+                Votre témoignage a bien été envoyé. Il sera publié après vérification. Nous vous remercions pour votre confiance.
+              </p>
+              <Btn onClick={() => setPage("accueil")}>Retour à l'accueil →</Btn>
+            </div>
+          ) : (
+            <div style={{ background: C.lightBg, borderRadius: 24, padding: "48px 40px", border: `1px solid ${C.border}` }}>
+              <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 28, color: C.navy, marginBottom: 8 }}>Partagez votre expérience</h2>
+              <p style={{ color: C.textMed, fontSize: 15, marginBottom: 32, lineHeight: 1.7 }}>Tous les champs marqués d'un * sont obligatoires.</p>
+
+              <div style={{ marginBottom: 24 }}>
+                <label style={{ display: "block", fontWeight: 600, fontSize: 14, color: C.navy, marginBottom: 8 }}>Votre note *</label>
+                <div style={{ display: "flex", gap: 6 }}>
+                  {[1, 2, 3, 4, 5].map(n => (
+                    <span key={n}
+                      onClick={() => setStars(n)}
+                      onMouseEnter={() => setHoverStar(n)}
+                      onMouseLeave={() => setHoverStar(0)}
+                      style={{
+                        fontSize: 36, cursor: "pointer", transition: "transform 0.2s",
+                        color: n <= (hoverStar || stars) ? C.accent : "#ddd",
+                        transform: n <= (hoverStar || stars) ? "scale(1.1)" : "scale(1)"
+                      }}
+                    >&#9733;</span>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+                <div>
+                  <label style={{ display: "block", fontWeight: 600, fontSize: 14, color: C.navy, marginBottom: 8 }}>Nom / Prénom *</label>
+                  <input value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })} placeholder="Ex: Marie D."
+                    style={{ width: "100%", padding: "14px 18px", borderRadius: 12, border: `1px solid ${C.border}`, fontSize: 15, fontFamily: "inherit", outline: "none", transition: "border 0.3s" }}
+                    onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border} />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontWeight: 600, fontSize: 14, color: C.navy, marginBottom: 8 }}>Ville</label>
+                  <input value={form.ville} onChange={e => setForm({ ...form, ville: e.target.value })} placeholder="Ex: Montbéliard"
+                    style={{ width: "100%", padding: "14px 18px", borderRadius: 12, border: `1px solid ${C.border}`, fontSize: 15, fontFamily: "inherit", outline: "none", transition: "border 0.3s" }}
+                    onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border} />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: 24 }}>
+                <label style={{ display: "block", fontWeight: 600, fontSize: 14, color: C.navy, marginBottom: 8 }}>Votre avis *</label>
+                <textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} rows={5} placeholder="Décrivez votre expérience avec Novalis..."
+                  style={{ width: "100%", padding: "14px 18px", borderRadius: 12, border: `1px solid ${C.border}`, fontSize: 15, fontFamily: "inherit", outline: "none", resize: "vertical", transition: "border 0.3s" }}
+                  onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border} />
+              </div>
+
+              <Btn onClick={handleSubmit} style={{ width: "100%", justifyContent: "center", fontSize: 16, padding: "17px 38px", opacity: (form.nom && stars > 0 && form.message && !sending) ? 1 : 0.5 }}>
+                {sending ? "Envoi en cours..." : "Envoyer mon avis →"}
+              </Btn>
+            </div>
+          )}
+        </div>
+      </section>
+    </>
+  );
+}
+
+/* ========== PAGE MENTIONS LÉGALES ========== */
+
+function PageMentions() {
+  const pStyle = { fontSize: 15, color: C.textMed, lineHeight: 1.8, marginBottom: 16 };
+  const hStyle = { fontSize: 20, fontWeight: 700, color: C.navy, marginTop: 32, marginBottom: 12 };
+
+  return (
+    <>
+      <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "180px 32px 90px" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", textAlign: "center" }}>
+          <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 50, color: C.white, marginBottom: 16 }}>Mentions légales</h1>
+        </div>
+      </section>
+
+      <section style={{ padding: "80px 32px", background: C.white }}>
+        <div style={{ maxWidth: 800, margin: "0 auto" }}>
+          <h3 style={hStyle}>1. Éditeur du site</h3>
+          <p style={pStyle}>
+            Le site novalis-menuiserie.fr est édité par la société NOVALIS ENERGIE, SAS (Société par Actions Simplifiée), immatriculée au Registre du Commerce et des Sociétés sous le numéro SIREN 992 085 654.
+          </p>
+          <p style={pStyle}>
+            Siège social : 19 bis rue Léon Contejean, 25200 Bethoncourt, France<br />
+            SIRET : 992 085 654 00018<br />
+            N° TVA intracommunautaire : FR57 992085654<br />
+            Code APE : 4321A<br />
+            Président : Faicel Fettouh
+          </p>
+          <p style={pStyle}>
+            Email : <strong>contact@novalis-menuiserie.fr</strong><br />
+            Téléphone : <strong>03 63 11 04 67</strong>
+          </p>
+
+          <h3 style={hStyle}>2. Directeur de la publication</h3>
+          <p style={pStyle}>Le directeur de la publication est Faicel Fettouh, en qualité de Président de la société NOVALIS ENERGIE.</p>
+
+          <h3 style={hStyle}>3. Hébergement</h3>
+          <p style={pStyle}>
+            Ce site est hébergé par Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis.<br />
+            Site web : https://vercel.com
+          </p>
+
+          <h3 style={hStyle}>4. Propriété intellectuelle</h3>
+          <p style={pStyle}>
+            L'ensemble du contenu de ce site (textes, images, graphismes, logo, icônes, etc.) est la propriété exclusive de NOVALIS ENERGIE, sauf mention contraire. Toute reproduction, représentation, modification, publication ou adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite sans autorisation écrite préalable de NOVALIS ENERGIE.
+          </p>
+
+          <h3 style={hStyle}>5. Limitation de responsabilité</h3>
+          <p style={pStyle}>
+            NOVALIS ENERGIE s'efforce de fournir sur le site des informations aussi précises que possible. Toutefois, elle ne pourra être tenue responsable des omissions, des inexactitudes et des carences dans la mise à jour, qu'elles soient de son fait ou du fait des tiers partenaires qui lui fournissent ces informations.
+          </p>
+
+          <h3 style={hStyle}>6. Cookies</h3>
+          <p style={pStyle}>
+            Ce site peut utiliser des cookies à des fins de mesure d'audience et d'amélioration de l'expérience utilisateur. Vous pouvez configurer votre navigateur pour refuser les cookies.
+          </p>
+
+          <h3 style={hStyle}>7. Droit applicable</h3>
+          <p style={pStyle}>
+            Tout litige en relation avec l'utilisation du site novalis-menuiserie.fr est soumis au droit français. L'utilisateur reconnaît la compétence exclusive des tribunaux compétents de Montbéliard.
+          </p>
+        </div>
+      </section>
+    </>
+  );
+}
+
+/* ========== PAGE POLITIQUE DE CONFIDENTIALITÉ ========== */
+
+function PageConfidentialite() {
+  const pStyle = { fontSize: 15, color: C.textMed, lineHeight: 1.8, marginBottom: 16 };
+  const hStyle = { fontSize: 20, fontWeight: 700, color: C.navy, marginTop: 32, marginBottom: 12 };
+
+  return (
+    <>
+      <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "180px 32px 90px" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", textAlign: "center" }}>
+          <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 50, color: C.white, marginBottom: 16 }}>Politique de confidentialité</h1>
+        </div>
+      </section>
+
+      <section style={{ padding: "80px 32px", background: C.white }}>
+        <div style={{ maxWidth: 800, margin: "0 auto" }}>
+          <p style={pStyle}>
+            Dernière mise à jour : mars 2026. La société NOVALIS ENERGIE accorde une grande importance à la protection de vos données personnelles. Cette politique de confidentialité vous informe sur la manière dont vos données sont collectées, utilisées et protégées.
+          </p>
+
+          <h3 style={hStyle}>1. Responsable du traitement</h3>
+          <p style={pStyle}>
+            Le responsable du traitement des données est la société NOVALIS ENERGIE, SAS, dont le siège social est situé au 19 bis rue Léon Contejean, 25200 Bethoncourt, représentée par Faicel Fettouh, Président.
+          </p>
+
+          <h3 style={hStyle}>2. Données collectées</h3>
+          <p style={pStyle}>
+            Dans le cadre de l'utilisation de notre site, nous sommes amenés à collecter les données suivantes via nos formulaires :
+          </p>
+          <p style={pStyle}>
+            — Formulaire de demande de devis : nom, prénom, téléphone, adresse email, ville, type de projet, message.<br />
+            — Formulaire d'avis client : nom, ville, note, commentaire.
+          </p>
+
+          <h3 style={hStyle}>3. Finalité du traitement</h3>
+          <p style={pStyle}>
+            Vos données sont collectées pour les finalités suivantes : répondre à vos demandes de devis, vous recontacter dans le cadre de votre projet, publier votre avis client (avec votre consentement), et améliorer nos services.
+          </p>
+
+          <h3 style={hStyle}>4. Base légale du traitement</h3>
+          <p style={pStyle}>
+            Le traitement de vos données repose sur votre consentement (envoi volontaire du formulaire) et sur l'intérêt légitime de NOVALIS ENERGIE à répondre à vos demandes commerciales.
+          </p>
+
+          <h3 style={hStyle}>5. Destinataires des données</h3>
+          <p style={pStyle}>
+            Vos données sont transmises uniquement à l'équipe de NOVALIS ENERGIE. Les formulaires sont traités via le service Formspree (https://formspree.io), dont les serveurs sont situés aux États-Unis et qui respecte les normes de protection des données.
+          </p>
+
+          <h3 style={hStyle}>6. Durée de conservation</h3>
+          <p style={pStyle}>
+            Vos données sont conservées pendant une durée maximale de 3 ans à compter de votre dernière interaction avec NOVALIS ENERGIE, sauf obligation légale de conservation plus longue.
+          </p>
+
+          <h3 style={hStyle}>7. Vos droits</h3>
+          <p style={pStyle}>
+            Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez des droits suivants : droit d'accès, droit de rectification, droit à l'effacement, droit à la limitation du traitement, droit à la portabilité de vos données, et droit d'opposition.
+          </p>
+          <p style={pStyle}>
+            Pour exercer ces droits, vous pouvez nous contacter par email à l'adresse : <strong>contact@novalis-menuiserie.fr</strong> ou par courrier à l'adresse du siège social.
+          </p>
+
+          <h3 style={hStyle}>8. Cookies</h3>
+          <p style={pStyle}>
+            Ce site n'utilise pas de cookies de suivi publicitaire. Des cookies techniques peuvent être utilisés pour le bon fonctionnement du site. Vous pouvez à tout moment configurer votre navigateur pour désactiver les cookies.
+          </p>
+
+          <h3 style={hStyle}>9. Modification de la politique</h3>
+          <p style={pStyle}>
+            NOVALIS ENERGIE se réserve le droit de modifier la présente politique de confidentialité à tout moment. Les modifications prennent effet dès leur publication sur le site.
+          </p>
+        </div>
+      </section>
+    </>
+  );
+}
+
+/* ========== APP PRINCIPAL ========== */
+
+export default function NovalisSite() {
+  const [page, setPage] = useState("accueil");
+  const [scrolled, setScrolled] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const h = () => {
+      const currentY = window.scrollY;
+      setScrolled(currentY > 50);
+      if (currentY < 50) {
+        setHeaderVisible(true);
+      } else if (currentY < lastScrollY.current) {
+        setHeaderVisible(true);
+      } else if (currentY > lastScrollY.current + 5) {
+        setHeaderVisible(false);
+      }
+      lastScrollY.current = currentY;
+    };
+    window.addEventListener("scroll", h);
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [page]);
+
+  return (
+    <div style={{ fontFamily: "'Outfit', sans-serif", color: C.text, overflowX: "hidden", minHeight: "100vh" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { overflow-x: hidden; }
+        ::selection { background: ${C.accentLight}; color: ${C.navy}; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes heroTextIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes promoPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+
+        .desktop-nav { display: flex; }
+        .mobile-menu-btn { display: none !important; }
+
+        @media (max-width: 900px) {
+          .desktop-nav { display: none !important; }
+          .mobile-menu-btn { display: flex !important; }
+          .hero-badge { display: none !important; }
+          .step-line { display: none !important; }
+          h1 { font-size: 36px !important; }
+          h2 { font-size: 30px !important; }
+        }
+        @media (max-width: 768px) {
+          .stats-row { flex-direction: column !important; gap: 28px !important; }
+          .stats-divider { display: none !important; }
+        }
+      `}</style>
+
+      <Header page={page} setPage={setPage} scrolled={scrolled} headerVisible={headerVisible} />
+
+      <main key={page} style={{ animation: "fadeIn 0.4s ease" }}>
+        {page === "accueil" && <PageAccueil setPage={setPage} />}
+        {page === "services" && <PageServices setPage={setPage} />}
+        {page === "apropos" && <PageAPropos setPage={setPage} />}
+        {page === "contact" && <PageContact />}
+        {page === "avis" && <PageAvis setPage={setPage} />}
+        {page === "mentions" && <PageMentions />}
+        {page === "confidentialite" && <PageConfidentialite />}
+      </main>
+
+      <Footer setPage={setPage} />
+    </div>
+  );
+}
