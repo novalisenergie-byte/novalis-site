@@ -234,6 +234,17 @@ function PageAccueil({ setPage }) {
             onMouseEnter={ev => { ev.target.style.background = C.navy; ev.target.style.color = "#fff"; }}
             onMouseLeave={ev => { ev.target.style.background = "#fff"; ev.target.style.color = "#D4841A"; }}
           >En profiter →</button>
+          <a href="tel:0363110467" style={{
+            background: "transparent", color: "#fff", border: "2px solid rgba(255,255,255,0.5)", borderRadius: 50, padding: "6px 20px",
+            fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit", transition: "all 0.3s",
+            textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8
+          }}
+            onMouseEnter={ev => { ev.target.style.background = "#fff"; ev.target.style.color = "#D4841A"; ev.target.style.borderColor = "#fff"; }}
+            onMouseLeave={ev => { ev.target.style.background = "transparent"; ev.target.style.color = "#fff"; ev.target.style.borderColor = "rgba(255,255,255,0.5)"; }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            03 63 11 04 67
+          </a>
         </div>
       </div>
 
@@ -691,20 +702,20 @@ function PageContact() {
 
   return (
     <>
-      <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "180px 32px 90px" }}>
+      <section className="contact-hero" style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "180px 32px 90px" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
           <SectionLabel>Contact</SectionLabel>
-          <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 50, color: C.white, marginBottom: 16 }}>Demandez votre devis gratuit</h1>
+          <h1 className="contact-hero-title" style={{ fontFamily: "'DM Serif Display', serif", fontSize: 50, color: C.white, marginBottom: 16 }}>Demandez votre devis gratuit</h1>
           <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 18, maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
             Décrivez-nous votre projet et recevez une réponse personnalisée sous 48 heures.
           </p>
         </div>
       </section>
 
-      <section style={{ padding: "80px 32px", background: C.lightBg }}>
+      <section className="contact-section" style={{ padding: "80px 32px", background: C.lightBg }}>
         <div style={{ maxWidth: 1240, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: 48, alignItems: "start" }}>
-            <div style={{ background: C.white, borderRadius: 20, padding: "44px 40px", boxShadow: "0 4px 30px rgba(0,0,0,0.04)", border: `1px solid ${C.border}` }}>
+          <div className="contact-grid" style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: 48, alignItems: "start" }}>
+            <div className="contact-form-card" style={{ background: C.white, borderRadius: 20, padding: "44px 40px", boxShadow: "0 4px 30px rgba(0,0,0,0.04)", border: `1px solid ${C.border}` }}>
               {sent ? (
                 <div style={{ textAlign: "center", padding: "48px 0" }}>
                   <div style={{ fontSize: 56, marginBottom: 20 }}>✅</div>
@@ -716,7 +727,7 @@ function PageContact() {
                   <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 26, color: C.navy, marginBottom: 8 }}>Formulaire de devis</h3>
                   <p style={{ color: C.textLight, fontSize: 14, marginBottom: 32 }}>Tous les champs marqués * sont obligatoires</p>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+                  <div className="contact-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
                     <div>
                       <label style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6, display: "block" }}>Nom complet *</label>
                       <input style={inputStyle} placeholder="Jean Dupont" value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })}
@@ -729,7 +740,7 @@ function PageContact() {
                     </div>
                   </div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+                  <div className="contact-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
                     <div>
                       <label style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6, display: "block" }}>Email *</label>
                       <input style={inputStyle} placeholder="jean@exemple.fr" type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
@@ -776,14 +787,14 @@ function PageContact() {
               )}
             </div>
 
-            <div>
+            <div className="contact-sidebar">
               <div style={{ background: C.white, borderRadius: 16, padding: "32px 28px", marginBottom: 20, border: `1px solid ${C.border}` }}>
                 <h4 style={{ fontSize: 18, fontWeight: 700, color: C.navy, marginBottom: 20 }}>Nos coordonnées</h4>
                 <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                   {[
                     { label: "Téléphone", val: "03 63 11 04 67" },
                     { label: "Email", val: "contact@novalis-menuiserie.fr" },
-                    { label: "Horaires", val: "Lun - Ven : 8h/ - 18h\n" },
+                    { label: "Horaires", val: "Lun - Ven : 8h - 18h" },
                   ].map((c, i) => (
                     <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
                       <div>
@@ -793,6 +804,21 @@ function PageContact() {
                     </div>
                   ))}
                 </div>
+                
+                {/* Bouton Appeler maintenant */}
+                <a href="tel:0363110467" style={{
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+                  background: `linear-gradient(135deg, #25D366 0%, #128C7E 100%)`,
+                  color: "#fff", fontWeight: 700, fontSize: 15, padding: "14px 24px",
+                  borderRadius: 50, marginTop: 20, textDecoration: "none",
+                  boxShadow: "0 4px 15px rgba(37, 211, 102, 0.3)", transition: "all 0.3s"
+                }}
+                  onMouseEnter={ev => { ev.target.style.transform = "translateY(-2px)"; ev.target.style.boxShadow = "0 6px 20px rgba(37, 211, 102, 0.4)"; }}
+                  onMouseLeave={ev => { ev.target.style.transform = ""; ev.target.style.boxShadow = "0 4px 15px rgba(37, 211, 102, 0.3)"; }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                  Appeler maintenant
+                </a>
               </div>
 
               <div style={{ background: C.accentLight, borderRadius: 16, padding: "28px", border: "1px solid rgba(232,152,43,0.15)" }}>
@@ -1130,6 +1156,60 @@ export default function NovalisSite() {
           .stats-row { flex-direction: column !important; gap: 28px !important; }
           .stats-divider { display: none !important; }
         }
+
+        /* Bouton flottant appel */
+        .floating-call-btn {
+          position: fixed;
+          bottom: 24px;
+          right: 24px;
+          z-index: 999;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+          border: none;
+          cursor: pointer;
+          box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          animation: floatPulse 2s ease-in-out infinite;
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .floating-call-btn:hover {
+          transform: scale(1.1);
+          box-shadow: 0 6px 28px rgba(37, 211, 102, 0.5);
+        }
+        @keyframes floatPulse {
+          0%, 100% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); }
+          50% { box-shadow: 0 4px 30px rgba(37, 211, 102, 0.6), 0 0 0 8px rgba(37, 211, 102, 0.15); }
+        }
+
+        /* Page Contact responsive */
+        @media (max-width: 900px) {
+          .contact-grid {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+          }
+          .contact-form-card {
+            padding: 28px 20px !important;
+          }
+          .contact-form-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .contact-hero {
+            padding: 140px 20px 60px !important;
+          }
+          .contact-hero h1 {
+            font-size: 32px !important;
+          }
+          .contact-section {
+            padding: 40px 16px !important;
+          }
+          .contact-sidebar {
+            order: -1;
+          }
+        }
       `}</style>
 
       <Header page={page} setPage={setPage} scrolled={scrolled} headerVisible={headerVisible} />
@@ -1145,6 +1225,13 @@ export default function NovalisSite() {
       </main>
 
       <Footer setPage={setPage} />
+
+      {/* Bouton flottant appel */}
+      <a href="tel:0363110467" className="floating-call-btn" title="Appelez-nous" aria-label="Appeler Novalis">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff">
+          <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+        </svg>
+      </a>
     </div>
   );
 }
