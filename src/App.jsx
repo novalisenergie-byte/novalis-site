@@ -433,6 +433,67 @@ function PageAccueil({ setPage }) {
         </div>
       </section>
 
+      {/* ZONE D'INTERVENTION */}
+      <section style={{ padding: "100px 32px", background: C.lightBg }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
+          <SectionLabel>Zone d'intervention</SectionLabel>
+          <SectionTitle>Nous intervenons près de chez vous</SectionTitle>
+          <p style={{ fontSize: 17, color: C.textMed, lineHeight: 1.8, maxWidth: 750, margin: "0 auto 48px" }}>
+            Novalis Menuiserie intervient dans tout le <strong style={{ color: C.accent }}>Pays de Montbéliard</strong> et ses alentours.
+            Nous nous déplaçons également dans les départements du <strong style={{ color: C.accent }}>Doubs (25)</strong>,
+            <strong style={{ color: C.accent }}> Territoire de Belfort (90)</strong>, <strong style={{ color: C.accent }}>Haute-Saône (70)</strong> et <strong style={{ color: C.accent }}>Haut-Rhin (68)</strong> pour vos projets de menuiserie et de fermetures sur mesure.
+            Déplacement gratuit pour une étude personnalisée.
+          </p>
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            gap: 12,
+            marginBottom: 40
+          }}>
+            {[
+              "Montbéliard",
+              "Belfort",
+              "Héricourt",
+              "Audincourt",
+              "Sochaux",
+              "Valentigney",
+              "Delle",
+              "Beaucourt",
+              "Bavans",
+              "Voujeaucourt"
+            ].map(ville => (
+              <span key={ville}
+                style={{
+                  background: C.white,
+                  padding: "12px 24px",
+                  borderRadius: 50,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: C.navy,
+                  border: `1px solid ${C.border}`,
+                  transition: "all 0.3s"
+                }}
+                onMouseEnter={e => { e.target.style.borderColor = C.accent; e.target.style.color = C.accent; }}
+                onMouseLeave={e => { e.target.style.borderColor = C.border; e.target.style.color = C.navy; }}
+              >
+                {ville}
+              </span>
+            ))}
+          </div>
+          <p style={{ fontSize: 15, color: C.textLight }}>
+            Et toutes les communes environnantes — 
+            <span
+              onClick={() => setPage("contact")}
+              style={{ color: C.accent, fontWeight: 600, cursor: "pointer" }}
+            >
+              Contactez-nous
+            </span>
+            {" "}pour vérifier.
+          </p>
+        </div>
+      </section>
+
       {/* CTA */}
       <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "100px 32px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "-30%", right: "-10%", width: 500, height: 500, background: `radial-gradient(circle, rgba(232,152,43,0.1) 0%, transparent 65%)`, borderRadius: "50%" }} />
