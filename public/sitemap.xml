@@ -1,20 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-<url>
-<loc>https://www.novalis-menuiserie.fr/</loc>
-</url>
-
-<url>
-<loc>https://www.novalis-menuiserie.fr/contact</loc>
-</url>
-
-<url>
-<loc>https://www.novalis-menuiserie.fr/services</loc>
-</url>
-
-<url>
-<loc>https://www.novalis-menuiserie.fr/realisations</loc>
-</url>
-
+  <!-- Pages principales -->
+  <url>
+    <loc>https://novalis-menuiserie.fr/</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://novalis-menuiserie.fr/services</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://novalis-menuiserie.fr/apropos</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://novalis-menuiserie.fr/contact</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://novalis-menuiserie.fr/avis</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://novalis-menuiserie.fr/mentions</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://novalis-menuiserie.fr/confidentialite</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Pages SEO locales (invisibles dans le menu) -->
+  <url>
+    <loc>https://novalis-menuiserie.fr/menuisier-montbeliard</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://novalis-menuiserie.fr/menuisier-belfort</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://novalis-menuiserie.fr/menuisier-besancon</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://novalis-menuiserie.fr/menuisier-mulhouse</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://novalis-menuiserie.fr/menuisier-hericourt</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://novalis-menuiserie.fr/menuisier-delle</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 </urlset>

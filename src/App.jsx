@@ -589,10 +589,10 @@ function PageAPropos({ setPage }) {
                 Notre engagement : des solutions sur mesure, performantes et esthétiques, avec un rapport qualité-prix irréprochable.
               </p>
             </div>
-            <div style={{ borderRadius: 24, height: 480, position: "relative", overflow: "hidden" }}>
-              <img src="/7.png" alt="Réalisation Novalis" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              <div style={{ position: "absolute", top: 20, right: 20, background: C.accent, color: C.white, borderRadius: 12, padding: "12px 20px", fontWeight: 700, fontSize: 14 }}>
-                Depuis 15+ ans
+            <div style={{ borderRadius: 24, height: 480, position: "relative", overflow: "hidden", background: C.lightBg }}>
+              <img src="/fermeture-hericourt.jpg" alt="Camion Novalis Fermeture & Menuiserie" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ position: "absolute", top: 20, right: 20, background: C.accent, color: C.white, borderRadius: 12, padding: "12px 20px", fontWeight: 700, fontSize: 14, display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 16 }}>✓</span> Pose professionnelle
               </div>
             </div>
           </div>
@@ -1085,6 +1085,247 @@ function PageConfidentialite() {
   );
 }
 
+/* ========== PAGES SEO LOCALES (invisibles dans le menu) ========== */
+
+const villesSEO = [
+  {
+    slug: "menuisier-montbeliard",
+    ville: "Montbéliard",
+    region: "Pays de Montbéliard",
+    cp: "25200",
+    metaTitle: "Menuisier à Montbéliard | Fenêtres, Portes, Volets - Novalis",
+    description: "Votre menuisier à Montbéliard et ses environs. Installation de fenêtres, portes, volets et portails. Devis gratuit et intervention rapide.",
+    zones: ["Bethoncourt", "Audincourt", "Valentigney", "Sochaux", "Grand-Charmont", "Exincourt", "Bavans", "Voujeaucourt"]
+  },
+  {
+    slug: "menuisier-belfort",
+    ville: "Belfort",
+    region: "Territoire de Belfort",
+    cp: "90000",
+    metaTitle: "Menuisier à Belfort | Pose Fenêtres PVC Alu - Novalis",
+    description: "Menuisier qualifié à Belfort. Pose de menuiseries PVC et aluminium, volets roulants, portes d'entrée. Intervention dans tout le Territoire de Belfort.",
+    zones: ["Delle", "Beaucourt", "Valdoie", "Offemont", "Bavilliers", "Danjoutin", "Essert", "Cravanche"]
+  },
+  {
+    slug: "menuisier-besancon",
+    ville: "Besançon",
+    region: "Doubs",
+    cp: "25000",
+    metaTitle: "Menuisier à Besançon | Fenêtres sur Mesure - Novalis",
+    description: "Spécialiste menuiserie à Besançon. Fenêtres sur mesure, baies vitrées, rénovation énergétique. Artisan local de confiance.",
+    zones: ["Thise", "École-Valentin", "Miserey-Salines", "Pirey", "Franois", "Saône", "Beure", "Châtillon-le-Duc"]
+  },
+  {
+    slug: "menuisier-mulhouse",
+    ville: "Mulhouse",
+    region: "Haut-Rhin",
+    cp: "68100",
+    metaTitle: "Menuisier à Mulhouse | Installation Fermetures - Novalis",
+    description: "Menuisier professionnel à Mulhouse et alentours. Installation et rénovation de fermetures. Qualité et prix compétitifs.",
+    zones: ["Illzach", "Wittenheim", "Kingersheim", "Riedisheim", "Rixheim", "Pfastatt", "Brunstatt", "Lutterbach"]
+  },
+  {
+    slug: "menuisier-hericourt",
+    ville: "Héricourt",
+    region: "Haute-Saône",
+    cp: "70400",
+    metaTitle: "Menuisier à Héricourt | Fenêtres & Volets - Novalis",
+    description: "Menuisier à Héricourt et en Haute-Saône. Fenêtres, portes, volets : solutions sur mesure pour votre habitat.",
+    zones: ["Châlonvillars", "Bussurel", "Tavey", "Brevilliers", "Vyans-le-Val", "Luze", "Mandrevillars", "Couthenans"]
+  },
+  {
+    slug: "menuisier-delle",
+    ville: "Delle",
+    region: "Territoire de Belfort",
+    cp: "90100",
+    metaTitle: "Menuisier à Delle | Portes & Portails - Novalis",
+    description: "Artisan menuisier à Delle. Pose de menuiseries extérieures, fermetures et portails. Service de proximité et qualité garantie.",
+    zones: ["Grandvillars", "Beaucourt", "Bourogne", "Montreux-Château", "Joncherey", "Lebetain", "Fêche-l'Église", "Florimont"]
+  }
+];
+
+function PageSEOVille({ villeSlug, setPage }) {
+  const data = villesSEO.find(v => v.slug === villeSlug) || villesSEO[0];
+  
+  const services = [
+    { icon: "🪟", title: "Fenêtres PVC & Aluminium", desc: "Installation de fenêtres haute performance thermique et acoustique. Large choix de coloris et finitions." },
+    { icon: "🚪", title: "Portes d'entrée", desc: "Portes d'entrée sécurisées et isolantes. Design moderne ou classique selon vos envies." },
+    { icon: "🏠", title: "Volets roulants & battants", desc: "Volets sur mesure, manuels ou motorisés. Protection solaire et sécurité renforcée." },
+    { icon: "🚗", title: "Portails & clôtures", desc: "Portails aluminium motorisés et clôtures assorties. Entrée sécurisée et esthétique." },
+    { icon: "🌅", title: "Baies vitrées", desc: "Baies coulissantes et à galandage. Lumière maximale et ouverture sur l'extérieur." },
+    { icon: "🔧", title: "Rénovation énergétique", desc: "Remplacement de menuiseries anciennes. Économies d'énergie et aides financières." },
+  ];
+
+  return (
+    <>
+      {/* HERO SEO */}
+      <section style={{
+        background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`,
+        padding: "180px 32px 100px", position: "relative", overflow: "hidden"
+      }}>
+        <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 500, height: 500, background: `radial-gradient(circle, rgba(232,152,43,0.15) 0%, transparent 65%)`, borderRadius: "50%" }} />
+        <div style={{ maxWidth: 1240, margin: "0 auto", position: "relative", zIndex: 2 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(232,152,43,0.15)", borderRadius: 50, padding: "8px 20px", marginBottom: 24, border: "1px solid rgba(232,152,43,0.25)" }}>
+            <span style={{ fontSize: 16 }}>📍</span>
+            <span style={{ color: C.accent, fontSize: 14, fontWeight: 600 }}>{data.region} • {data.cp}</span>
+          </div>
+          
+          <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 52, fontWeight: 400, color: C.white, lineHeight: 1.1, maxWidth: 800, marginBottom: 20 }}>
+            Menuisier à {data.ville}
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 20, lineHeight: 1.7, maxWidth: 650, marginBottom: 36 }}>
+            {data.description}
+          </p>
+          
+          <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 48 }}>
+            <Btn onClick={() => setPage("contact")} style={{ fontSize: 16, padding: "17px 38px" }}>
+              Devis gratuit à {data.ville} →
+            </Btn>
+            <a href="tel:0363110467" style={{
+              display: "inline-flex", alignItems: "center", gap: 10,
+              background: "rgba(255,255,255,0.1)", color: "#fff", border: "2px solid rgba(255,255,255,0.3)",
+              borderRadius: 50, padding: "15px 28px", fontWeight: 700, fontSize: 15, textDecoration: "none",
+              transition: "all 0.3s"
+            }}>
+              <span>📞</span> 03 63 11 04 67
+            </a>
+          </div>
+
+          {/* Stats */}
+          <div style={{ display: "flex", gap: 40, flexWrap: "wrap" }}>
+            {[
+              { n: "15+", s: "années d'expérience" },
+              { n: "500+", s: "chantiers réalisés" },
+              { n: "98%", s: "clients satisfaits" },
+            ].map((stat, i) => (
+              <div key={i} style={{ textAlign: "left" }}>
+                <div style={{ fontSize: 32, fontWeight: 800, color: C.accent }}>{stat.n}</div>
+                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginTop: 4 }}>{stat.s}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services */}
+      <section style={{ padding: "100px 32px", background: C.white }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <SectionLabel>Nos services à {data.ville}</SectionLabel>
+            <SectionTitle>Tous vos travaux de menuiserie</SectionTitle>
+            <p style={{ color: C.textLight, fontSize: 17, maxWidth: 600, margin: "0 auto", lineHeight: 1.7 }}>
+              De la fenêtre au portail, nous intervenons sur l'ensemble de vos menuiseries et fermetures à {data.ville} et dans les communes voisines.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 24 }}>
+            {services.map((s, i) => (
+              <div key={i} style={{
+                background: C.lightBg, borderRadius: 16, padding: "32px 28px",
+                border: `1px solid ${C.border}`, transition: "all 0.4s"
+              }}
+                onMouseEnter={ev => { ev.currentTarget.style.transform = "translateY(-4px)"; ev.currentTarget.style.boxShadow = "0 12px 35px rgba(0,0,0,0.06)"; }}
+                onMouseLeave={ev => { ev.currentTarget.style.transform = ""; ev.currentTarget.style.boxShadow = ""; }}
+              >
+                <div style={{ fontSize: 36, marginBottom: 16 }}>{s.icon}</div>
+                <h3 style={{ fontSize: 20, fontWeight: 700, color: C.navy, marginBottom: 10 }}>{s.title}</h3>
+                <p style={{ fontSize: 15, color: C.textMed, lineHeight: 1.7 }}>{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Zones d'intervention */}
+      <section style={{ padding: "80px 32px", background: C.lightBg }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", textAlign: "center" }}>
+          <SectionLabel>Zone d'intervention</SectionLabel>
+          <SectionTitle>Nous intervenons à {data.ville} et environs</SectionTitle>
+          <p style={{ color: C.textMed, fontSize: 17, maxWidth: 640, margin: "0 auto 40px", lineHeight: 1.7 }}>
+            Notre équipe se déplace gratuitement pour établir votre devis dans toutes ces communes :
+          </p>
+          
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 12, marginBottom: 40 }}>
+            <span style={{ background: C.accent, padding: "12px 24px", borderRadius: 50, fontSize: 15, fontWeight: 700, color: C.white }}>
+              {data.ville}
+            </span>
+            {data.zones.map(z => (
+              <span key={z} style={{ background: C.white, padding: "10px 22px", borderRadius: 50, fontSize: 14, fontWeight: 600, color: C.navy, border: `1px solid ${C.border}` }}>
+                {z}
+              </span>
+            ))}
+          </div>
+          
+          <p style={{ color: C.textLight, fontSize: 14 }}>
+            Votre commune n'est pas listée ? <strong style={{ color: C.accent, cursor: "pointer" }} onClick={() => setPage("contact")}>Contactez-nous</strong>, nous intervenons probablement chez vous !
+          </p>
+        </div>
+      </section>
+
+      {/* Pourquoi nous choisir */}
+      <section style={{ padding: "100px 32px", background: C.white }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+            <div>
+              <SectionLabel>Pourquoi Novalis ?</SectionLabel>
+              <SectionTitle>Votre menuisier de confiance à {data.ville}</SectionTitle>
+              <div style={{ marginTop: 32 }}>
+                {[
+                  { title: "Devis gratuit et sans engagement", desc: "Nous nous déplaçons gratuitement chez vous pour étudier votre projet et établir un devis détaillé." },
+                  { title: "Produits de qualité", desc: "Nous travaillons avec les meilleurs fabricants français et européens pour vous garantir des menuiseries durables." },
+                  { title: "Pose par des professionnels", desc: "Nos techniciens sont formés et expérimentés. Ils interviennent avec soin et propreté." },
+                  { title: "Garantie et SAV réactif", desc: "Bénéficiez d'une garantie jusqu'à 10 ans et d'un service après-vente disponible et efficace." },
+                ].map((item, i) => (
+                  <div key={i} style={{ display: "flex", gap: 16, marginBottom: 24 }}>
+                    <div style={{ width: 28, height: 28, borderRadius: "50%", background: C.accentLight, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
+                      <span style={{ color: C.accent, fontWeight: 700, fontSize: 14 }}>✓</span>
+                    </div>
+                    <div>
+                      <h4 style={{ fontSize: 17, fontWeight: 700, color: C.navy, marginBottom: 4 }}>{item.title}</h4>
+                      <p style={{ fontSize: 14, color: C.textMed, lineHeight: 1.7 }}>{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ background: C.lightBg, borderRadius: 24, padding: 48, textAlign: "center" }}>
+              <div style={{ fontSize: 48, marginBottom: 20 }}>🏆</div>
+              <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 28, color: C.navy, marginBottom: 16 }}>
+                Prêt à démarrer votre projet ?
+              </h3>
+              <p style={{ color: C.textMed, fontSize: 15, lineHeight: 1.7, marginBottom: 32 }}>
+                Obtenez votre devis gratuit en moins de 48h. Nous intervenons rapidement à {data.ville} et dans tout le {data.region}.
+              </p>
+              <Btn onClick={() => setPage("contact")} style={{ fontSize: 16, padding: "17px 38px" }}>
+                Demander un devis gratuit →
+              </Btn>
+              <p style={{ marginTop: 20, fontSize: 14, color: C.textLight }}>
+                ou appelez-nous au <a href="tel:0363110467" style={{ color: C.accent, fontWeight: 700, textDecoration: "none" }}>03 63 11 04 67</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA final */}
+      <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "80px 32px" }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 36, color: C.white, marginBottom: 16 }}>
+            Menuisier à {data.ville} : faites confiance à Novalis
+          </h2>
+          <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 17, lineHeight: 1.7, marginBottom: 36 }}>
+            Installation, rénovation, dépannage — nous sommes à votre service pour tous vos projets de menuiserie et fermetures dans le {data.region}.
+          </p>
+          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+            <Btn onClick={() => setPage("contact")} style={{ fontSize: 16, padding: "17px 42px" }}>Devis gratuit →</Btn>
+            <Btn variant="outlineLight" onClick={() => setPage("services")}>Nos services</Btn>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
 /* ========== APP PRINCIPAL ========== */
 
 export default function NovalisSite() {
@@ -1209,6 +1450,13 @@ export default function NovalisSite() {
         {page === "avis" && <PageAvis setPage={setPage} />}
         {page === "mentions" && <PageMentions />}
         {page === "confidentialite" && <PageConfidentialite />}
+        {/* Pages SEO locales (invisibles dans le menu) */}
+        {page === "menuisier-montbeliard" && <PageSEOVille villeSlug="menuisier-montbeliard" setPage={setPage} />}
+        {page === "menuisier-belfort" && <PageSEOVille villeSlug="menuisier-belfort" setPage={setPage} />}
+        {page === "menuisier-besancon" && <PageSEOVille villeSlug="menuisier-besancon" setPage={setPage} />}
+        {page === "menuisier-mulhouse" && <PageSEOVille villeSlug="menuisier-mulhouse" setPage={setPage} />}
+        {page === "menuisier-hericourt" && <PageSEOVille villeSlug="menuisier-hericourt" setPage={setPage} />}
+        {page === "menuisier-delle" && <PageSEOVille villeSlug="menuisier-delle" setPage={setPage} />}
       </main>
 
       <Footer setPage={setPage} />
