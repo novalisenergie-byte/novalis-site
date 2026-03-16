@@ -5,6 +5,100 @@ import React, { useState, useEffect, useRef } from "react";
    Site professionnel - 4 pages
    ======================================== */
 
+/* ========== SEO META TAGS ========== */
+const SEO_DATA = {
+  accueil: {
+    title: "Novalis Fermeture & Menuiserie | Fenêtres, Portes, Volets - Montbéliard",
+    description: "Spécialiste menuiserie et fermetures à Montbéliard. Installation fenêtres PVC/alu, portes, volets, portails. Devis gratuit, -30% en ce moment. ☎ 03 63 11 04 67",
+    keywords: "menuisier montbéliard, fenêtre pvc, porte entrée, volet roulant, portail aluminium, belfort, héricourt"
+  },
+  services: {
+    title: "Nos Services | Fenêtres, Portes, Volets, Portails - Novalis Menuiserie",
+    description: "Découvrez nos services : fenêtres PVC et aluminium, portes d'entrée, volets roulants et battants, portails, baies vitrées. Pose professionnelle garantie.",
+    keywords: "fenêtre pvc, fenêtre aluminium, porte entrée, volet roulant, portail, baie vitrée, store, moustiquaire"
+  },
+  apropos: {
+    title: "À Propos | Novalis Fermeture & Menuiserie - Artisan Local",
+    description: "Entreprise de menuiserie à taille humaine dans le Pays de Montbéliard. 15+ ans d'expérience, pose professionnelle, garantie et SAV réactif.",
+    keywords: "menuisier local, artisan menuiserie, entreprise fermeture, montbéliard, doubs, franche-comté"
+  },
+  contact: {
+    title: "Contact & Devis Gratuit | Novalis Menuiserie - ☎ 03 63 11 04 67",
+    description: "Demandez votre devis gratuit pour vos fenêtres, portes et volets. Réponse sous 48h. Intervention Montbéliard, Belfort, Héricourt et environs.",
+    keywords: "devis menuiserie, devis fenêtre, devis gratuit, contact menuisier, montbéliard, belfort"
+  },
+  avis: {
+    title: "Avis Clients | Novalis Fermeture & Menuiserie",
+    description: "Découvrez les témoignages de nos clients satisfaits. 98% de satisfaction, travail soigné et pose professionnelle.",
+    keywords: "avis menuisier, témoignage client, satisfaction client, novalis avis"
+  },
+  faq: {
+    title: "FAQ | Questions Fréquentes - Novalis Menuiserie Montbéliard",
+    description: "Toutes les réponses à vos questions : devis, délais, garanties, aides financières, zones d'intervention. Novalis Menuiserie vous accompagne.",
+    keywords: "faq menuiserie, questions menuisier, devis gratuit, garantie fenêtre, aide rénovation, maprimerénov"
+  }
+};
+
+function SEOHead({ page }) {
+  const seo = SEO_DATA[page] || SEO_DATA.accueil;
+  
+  useEffect(() => {
+    // Update title
+    document.title = seo.title;
+    
+    // Update or create meta description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = seo.description;
+    
+    // Update or create meta keywords
+    let metaKeys = document.querySelector('meta[name="keywords"]');
+    if (!metaKeys) {
+      metaKeys = document.createElement('meta');
+      metaKeys.name = 'keywords';
+      document.head.appendChild(metaKeys);
+    }
+    metaKeys.content = seo.keywords;
+    
+    // Open Graph tags
+    const ogTags = [
+      { property: 'og:title', content: seo.title },
+      { property: 'og:description', content: seo.description },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: 'https://novalis-menuiserie.fr' },
+      { property: 'og:image', content: 'https://novalis-menuiserie.fr/logo-novalis.png' },
+      { property: 'og:locale', content: 'fr_FR' },
+      { property: 'og:site_name', content: 'Novalis Fermeture & Menuiserie' }
+    ];
+    
+    ogTags.forEach(tag => {
+      let ogTag = document.querySelector(`meta[property="${tag.property}"]`);
+      if (!ogTag) {
+        ogTag = document.createElement('meta');
+        ogTag.setAttribute('property', tag.property);
+        document.head.appendChild(ogTag);
+      }
+      ogTag.content = tag.content;
+    });
+    
+    // Twitter Card
+    let twitterCard = document.querySelector('meta[name="twitter:card"]');
+    if (!twitterCard) {
+      twitterCard = document.createElement('meta');
+      twitterCard.name = 'twitter:card';
+      twitterCard.content = 'summary_large_image';
+      document.head.appendChild(twitterCard);
+    }
+    
+  }, [page, seo]);
+  
+  return null;
+}
+
 const C = {
   navy: "#0C2340",
   navyLight: "#153660",
@@ -82,6 +176,7 @@ function Header({ page, setPage, scrolled, headerVisible }) {
     { id: "accueil", label: "Accueil" },
     { id: "services", label: "Services" },
     { id: "apropos", label: "À propos" },
+    { id: "faq", label: "FAQ" },
     { id: "contact", label: "Contact" },
   ];
 
@@ -1387,6 +1482,178 @@ function PageSEOVille({ villeSlug, setPage }) {
   );
 }
 
+/* ========== PAGE FAQ ========== */
+
+function PageFAQ({ setPage }) {
+  const faqs = [
+    {
+      category: "Nos services",
+      questions: [
+        {
+          q: "Quels types de menuiseries proposez-vous ?",
+          a: "Nous proposons une gamme complète : fenêtres PVC et aluminium, portes d'entrée, baies vitrées, volets roulants et battants, portails et clôtures aluminium, stores et moustiquaires. Tous nos produits sont sur mesure et adaptés à vos besoins."
+        },
+        {
+          q: "Travaillez-vous avec quelles marques ?",
+          a: "Nous travaillons avec les meilleurs fabricants français et européens pour vous garantir des menuiseries de qualité, durables et performantes. Nous sélectionnons nos partenaires selon des critères stricts de qualité et de fiabilité."
+        },
+        {
+          q: "Proposez-vous la motorisation des volets et portails ?",
+          a: "Oui, nous proposons la motorisation de vos volets roulants et portails. Nous pouvons également motoriser vos installations existantes. Télécommande, interrupteur mural ou pilotage par smartphone : plusieurs options sont disponibles."
+        }
+      ]
+    },
+    {
+      category: "Devis et tarifs",
+      questions: [
+        {
+          q: "Le devis est-il vraiment gratuit ?",
+          a: "Oui, le devis est 100% gratuit et sans engagement. Nous nous déplaçons chez vous pour prendre les mesures exactes et vous conseiller sur les meilleures solutions pour votre projet."
+        },
+        {
+          q: "Proposez-vous des facilités de paiement ?",
+          a: "Oui, nous proposons des solutions de financement adaptées à votre budget. Paiement en plusieurs fois sans frais possible selon les montants. N'hésitez pas à nous en parler lors de l'établissement du devis."
+        },
+        {
+          q: "Vos prix sont-ils négociables ?",
+          a: "Nos devis sont étudiés au plus juste pour vous proposer le meilleur rapport qualité-prix. Actuellement, profitez de -30% sur l'ensemble de nos produits et services."
+        }
+      ]
+    },
+    {
+      category: "Intervention et délais",
+      questions: [
+        {
+          q: "Dans quelles zones intervenez-vous ?",
+          a: "Nous intervenons dans tout le Pays de Montbéliard et ses environs : Belfort, Héricourt, Audincourt, Delle, ainsi que dans les départements du Doubs (25), Territoire de Belfort (90), Haute-Saône (70) et Haut-Rhin (68)."
+        },
+        {
+          q: "Quels sont les délais d'intervention ?",
+          a: "Après validation de votre devis, comptez en moyenne 4 à 6 semaines pour la fabrication sur mesure de vos menuiseries. La pose est ensuite réalisée en 1 à 2 jours selon l'ampleur du chantier."
+        },
+        {
+          q: "Intervenez-vous en urgence pour un dépannage ?",
+          a: "Oui, nous proposons un service de dépannage pour les problèmes urgents (volet bloqué, serrure cassée, vitrage brisé). Contactez-nous par téléphone pour une intervention rapide."
+        }
+      ]
+    },
+    {
+      category: "Garanties et aides",
+      questions: [
+        {
+          q: "Quelle garantie sur vos produits et la pose ?",
+          a: "Nos menuiseries sont garanties jusqu'à 10 ans selon les produits. La pose est garantie 2 ans. Notre service après-vente reste disponible pour toute question ou intervention."
+        },
+        {
+          q: "Puis-je bénéficier d'aides pour mes travaux ?",
+          a: "Oui, selon votre situation et le type de travaux, vous pouvez bénéficier d'aides comme MaPrimeRénov', l'éco-PTZ, les CEE (Certificats d'Économie d'Énergie) ou la TVA réduite à 5,5%. Nous vous accompagnons dans ces démarches."
+        },
+        {
+          q: "Êtes-vous certifiés RGE ?",
+          a: "Nous travaillons avec des partenaires certifiés RGE (Reconnu Garant de l'Environnement), ce qui vous permet de bénéficier des aides à la rénovation énergétique pour vos travaux d'isolation."
+        }
+      ]
+    }
+  ];
+
+  return (
+    <>
+      {/* Hero */}
+      <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`, padding: "180px 32px 100px" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+          <SectionLabel>FAQ</SectionLabel>
+          <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 50, color: C.white, marginBottom: 20 }}>
+            Questions fréquentes
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 18, lineHeight: 1.7, maxWidth: 600, margin: "0 auto" }}>
+            Retrouvez les réponses aux questions les plus posées par nos clients sur nos services, tarifs et interventions.
+          </p>
+        </div>
+      </section>
+
+      {/* FAQ Content */}
+      <section style={{ padding: "100px 32px", background: C.white }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          {faqs.map((cat, catIndex) => (
+            <div key={catIndex} style={{ marginBottom: 64 }}>
+              <h2 style={{ 
+                fontFamily: "'DM Serif Display', serif", 
+                fontSize: 28, 
+                color: C.navy, 
+                marginBottom: 24,
+                paddingBottom: 16,
+                borderBottom: `2px solid ${C.accent}`
+              }}>
+                {cat.category}
+              </h2>
+              
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {cat.questions.map((faq, i) => (
+                  <details key={i} style={{
+                    background: C.lightBg,
+                    borderRadius: 16,
+                    border: `1px solid ${C.border}`,
+                    overflow: "hidden"
+                  }}>
+                    <summary style={{
+                      padding: "24px 28px",
+                      fontSize: 17,
+                      fontWeight: 600,
+                      color: C.navy,
+                      cursor: "pointer",
+                      listStyle: "none",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center"
+                    }}>
+                      {faq.q}
+                      <span style={{ fontSize: 20, color: C.accent, fontWeight: 700, marginLeft: 16 }}>+</span>
+                    </summary>
+                    <div style={{
+                      padding: "0 28px 24px",
+                      fontSize: 15,
+                      color: C.textMed,
+                      lineHeight: 1.8
+                    }}>
+                      {faq.a}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          {/* CTA */}
+          <div style={{ 
+            background: C.lightBg, 
+            borderRadius: 24, 
+            padding: "48px 40px", 
+            textAlign: "center",
+            marginTop: 64 
+          }}>
+            <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 28, color: C.navy, marginBottom: 16 }}>
+              Vous avez une autre question ?
+            </h3>
+            <p style={{ color: C.textMed, fontSize: 16, lineHeight: 1.7, marginBottom: 32, maxWidth: 500, margin: "0 auto 32px" }}>
+              Notre équipe est à votre disposition pour répondre à toutes vos questions et vous accompagner dans votre projet.
+            </p>
+            <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+              <Btn onClick={() => setPage("contact")}>Nous contacter →</Btn>
+              <a href="tel:0363110467" style={{
+                display: "inline-flex", alignItems: "center", gap: 10,
+                background: C.white, color: C.navy, border: `2px solid ${C.navy}`,
+                borderRadius: 50, padding: "15px 28px", fontWeight: 600, fontSize: 15, textDecoration: "none"
+              }}>
+                📞 03 63 11 04 67
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
 /* ========== APP PRINCIPAL ========== */
 
 export default function NovalisSite() {
@@ -1501,12 +1768,14 @@ export default function NovalisSite() {
         }
       `}</style>
 
+      <SEOHead page={page} />
       <Header page={page} setPage={setPage} scrolled={scrolled} headerVisible={headerVisible} />
 
       <main key={page} style={{ animation: "fadeIn 0.4s ease" }}>
         {page === "accueil" && <PageAccueil setPage={setPage} />}
         {page === "services" && <PageServices setPage={setPage} />}
         {page === "apropos" && <PageAPropos setPage={setPage} />}
+        {page === "faq" && <PageFAQ setPage={setPage} />}
         {page === "contact" && <PageContact />}
         {page === "avis" && <PageAvis setPage={setPage} />}
         {page === "mentions" && <PageMentions />}
