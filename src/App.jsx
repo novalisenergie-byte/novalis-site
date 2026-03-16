@@ -251,7 +251,7 @@ function PageAccueil({ setPage }) {
       {/* HERO */}
       <section style={{
         background: `linear-gradient(135deg, rgba(12,35,64,0.85) 0%, rgba(26,58,92,0.8) 40%, rgba(12,35,64,0.9) 100%), url(${slides[heroSlide].img}) center/cover no-repeat`,
-        minHeight: 420, display: "flex", alignItems: "center",
+        minHeight: 480, display: "flex", alignItems: "center",
         position: "relative", overflow: "hidden",
         transition: "background-image 0.8s ease"
       }}>
