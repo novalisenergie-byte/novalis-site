@@ -251,7 +251,7 @@ function PageAccueil({ setPage }) {
       {/* HERO */}
       <section style={{
         background: `linear-gradient(135deg, rgba(12,35,64,0.85) 0%, rgba(26,58,92,0.8) 40%, rgba(12,35,64,0.9) 100%), url(${slides[heroSlide].img}) center/cover no-repeat`,
-        minHeight: 620, display: "flex", alignItems: "center",
+        minHeight: 420, display: "flex", alignItems: "center",
         position: "relative", overflow: "hidden",
         transition: "background-image 0.8s ease"
       }}>
@@ -259,63 +259,50 @@ function PageAccueil({ setPage }) {
         <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, background: `radial-gradient(circle, rgba(232,152,43,0.1) 0%, transparent 65%)`, borderRadius: "50%" }} />
 
         {/* BADGE PROMO flottant */}
-        <div style={{
-          position: "absolute", top: 40, right: 40, zIndex: 10,
+        <div className="hero-badge" style={{
+          position: "absolute", top: 20, right: 40, zIndex: 10,
           background: "linear-gradient(135deg, #E8982B 0%, #D4841A 100%)",
-          borderRadius: "50%", width: 130, height: 130,
+          borderRadius: "50%", width: 100, height: 100,
           display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
           boxShadow: "0 8px 30px rgba(232,152,43,0.4)",
           animation: "promoPulse 2s ease-in-out infinite",
           border: "3px solid rgba(255,255,255,0.3)"
         }}>
-          <span style={{ fontSize: 36, fontWeight: 800, color: "#fff", lineHeight: 1 }}>-30%</span>
-          <span style={{ fontSize: 10, color: "rgba(255,255,255,0.9)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, marginTop: 4 }}>sur tout</span>
+          <span style={{ fontSize: 28, fontWeight: 800, color: "#fff", lineHeight: 1 }}>-30%</span>
+          <span style={{ fontSize: 9, color: "rgba(255,255,255,0.9)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, marginTop: 3 }}>sur tout</span>
         </div>
 
-        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "100px 32px 80px", position: "relative", zIndex: 2, width: "100%" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "50px 32px 40px", position: "relative", zIndex: 2, width: "100%" }}>
           <div key={heroSlide} style={{ animation: "heroTextIn 0.7s ease" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(232,152,43,0.12)", borderRadius: 50, padding: "8px 20px", marginBottom: 32, border: "1px solid rgba(232,152,43,0.2)" }}>
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: C.accent }} />
-              <span style={{ color: C.accent, fontSize: 13, fontWeight: 600 }}>-30% sur toutes les fermetures et menuiseries</span>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(232,152,43,0.12)", borderRadius: 50, padding: "6px 16px", marginBottom: 20, border: "1px solid rgba(232,152,43,0.2)" }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: C.accent }} />
+              <span style={{ color: C.accent, fontSize: 12, fontWeight: 600 }}>-30% sur toutes les fermetures et menuiseries</span>
             </div>
 
-            <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 58, fontWeight: 400, color: C.white, lineHeight: 1.08, maxWidth: 700, marginBottom: 24, whiteSpace: "pre-line" }}>
+            <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 46, fontWeight: 400, color: C.white, lineHeight: 1.1, maxWidth: 650, marginBottom: 16, whiteSpace: "pre-line" }}>
               {slides[heroSlide].title}
             </h1>
-            <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 18, lineHeight: 1.7, maxWidth: 520, marginBottom: 44 }}>
+            <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 16, lineHeight: 1.6, maxWidth: 480, marginBottom: 28 }}>
               {slides[heroSlide].sub}
             </p>
 
-            <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-              <Btn onClick={() => setPage("contact")} style={{ fontSize: 16, padding: "17px 38px" }}>
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+              <Btn onClick={() => setPage("contact")} style={{ fontSize: 15, padding: "14px 32px" }}>
                 Demander un devis →
               </Btn>
-              <Btn variant="outlineLight" onClick={() => setPage("services")}>Nos services</Btn>
+              <Btn variant="outlineLight" onClick={() => setPage("services")} style={{ padding: "14px 28px" }}>Nos services</Btn>
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: 10, marginTop: 56 }}>
+          <div style={{ display: "flex", gap: 10, marginTop: 32 }}>
             {slides.map((_, i) => (
               <button key={i} onClick={() => setHeroSlide(i)} style={{
-                width: i === heroSlide ? 36 : 10, height: 10, borderRadius: i === heroSlide ? 5 : "50%",
+                width: i === heroSlide ? 32 : 8, height: 8, borderRadius: i === heroSlide ? 4 : "50%",
                 background: i === heroSlide ? C.accent : "rgba(255,255,255,0.25)",
                 border: "none", cursor: "pointer", transition: "all 0.4s"
               }} />
             ))}
           </div>
-        </div>
-
-        <div className="hero-badge" style={{ position: "absolute", right: 40, bottom: 40, display: "flex", gap: 16 }}>
-          {[
-            { n: "98%", s: "clients satisfaits" },
-            { n: "10 ans", s: "de garantie" },
-            { n: "Certifié", s: "poseurs qualifiés" },
-          ].map((b, i) => (
-            <div key={i} style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(10px)", borderRadius: 14, padding: "16px 20px", border: "1px solid rgba(255,255,255,0.08)", textAlign: "center" }}>
-              <div style={{ fontSize: 22, fontWeight: 800, color: C.accent }}>{b.n}</div>
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", marginTop: 4 }}>{b.s}</div>
-            </div>
-          ))}
         </div>
       </section>
 
