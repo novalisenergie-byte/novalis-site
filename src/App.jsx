@@ -195,9 +195,9 @@ function Footer({ setPage }) {
 function PageAccueil({ setPage }) {
   const [heroSlide, setHeroSlide] = useState(0);
   const slides = [
-    { title: "Novalis Fermeture\n& Menuiserie", sub: "Spécialiste de la menuiserie et des fermetures sur mesure. Installation, rénovation et conseil personnalisé.", cta: "Demander un devis", img: "/1.png" },
-    { title: "Fenêtres &\nBaies vitrées", sub: "PVC, aluminium, sur mesure — performance thermique et acoustique pour votre confort quotidien.", cta: "Découvrir", img: "/2.png" },
-    { title: "Portes, portails\n& fermetures", sub: "Sécurité, isolation et élégance. Des solutions adaptées à chaque projet.", cta: "Nos services", img: "/3.png" },
+    { title: "Novalis Fermeture\n& Menuiserie", sub: "Spécialiste de la menuiserie et des fermetures sur mesure. Installation, rénovation et conseil personnalisé.", cta: "Demander un devis", img: "/pose-fenetre-montbeliard.png" },
+    { title: "Fenêtres &\nBaies vitrées", sub: "PVC, aluminium, sur mesure — performance thermique et acoustique pour votre confort quotidien.", cta: "Découvrir", img: "/pose-fenetre-belfort.png" },
+    { title: "Portes, portails\n& fermetures", sub: "Sécurité, isolation et élégance. Des solutions adaptées à chaque projet.", cta: "Nos services", img: "/pose-fenetre-besancon.png" },
   ];
 
   useEffect(() => {
@@ -206,9 +206,9 @@ function PageAccueil({ setPage }) {
   }, []);
 
   const expertises = [
-    { title: "Fenêtres & Baies vitrées", desc: "PVC, aluminium, sur mesure. Maximisez la lumière naturelle et l'isolation de votre habitat avec des menuiseries haute performance.", items: ["Fenêtres PVC", "Fenêtres aluminium", "Baies vitrées", "Sur mesure"], img: "/6.jpg" },
-    { title: "Portes & Portails", desc: "Porte d'entrée, portail aluminium, motorisation. Sécurisez et embellissez les accès de votre maison.", items: ["Portes d'entrée", "Portails aluminium", "Motorisation", "Clôtures"], img: "/4.webp" },
-    { title: "Volets & Fermetures", desc: "Volets roulants, volets battants, stores. Protégez-vous du soleil, du froid et des regards indiscrets.", items: ["Volets roulants", "Volets battants", "Stores", "Moustiquaires"], img: "/5.jpg" },
+    { title: "Fenêtres & Baies vitrées", desc: "PVC, aluminium, sur mesure. Maximisez la lumière naturelle et l'isolation de votre habitat avec des menuiseries haute performance.", items: ["Fenêtres PVC", "Fenêtres aluminium", "Baies vitrées", "Sur mesure"], img: "/menuiserie-montbeliard.jpg" },
+    { title: "Portes & Portails", desc: "Porte d'entrée, portail aluminium, motorisation. Sécurisez et embellissez les accès de votre maison.", items: ["Portes d'entrée", "Portails aluminium", "Motorisation", "Clôtures"], img: "/pose-fenetre-besançon.webp" },
+    { title: "Volets & Fermetures", desc: "Volets roulants, volets battants, stores. Protégez-vous du soleil, du froid et des regards indiscrets.", items: ["Volets roulants", "Volets battants", "Stores", "Moustiquaires"], img: "/pose-fenetre-mulhouse.jpg" },
   ];
 
 
