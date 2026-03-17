@@ -831,6 +831,11 @@ function PageContact() {
         })
       });
       setSent(true);
+      
+      // Google Ads Conversion Tracking
+      if (typeof gtag === 'function') {
+        gtag('event', 'conversion', {'send_to': 'AW-18018955994/IdfUCLT5x4ocENrljZBD'});
+      }
     } catch (err) {
       alert("Erreur lors de l'envoi. Veuillez réessayer.");
     }
