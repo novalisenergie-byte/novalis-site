@@ -191,7 +191,7 @@ function Header({ page, setPage, scrolled, headerVisible }) {
     }}>
       <div style={{ maxWidth: 1240, margin: "0 auto", padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: scrolled ? 70 : 140, transition: "height 0.4s ease" }}>
         <div style={{ cursor: "pointer", display: "flex", alignItems: "center" }} onClick={() => setPage("accueil")}>
-          <img src="/logo-novalis1.png" alt="Novalis Fermeture et Menuiserie" style={{ height: scrolled ? 50 : 130, width: "auto", transition: "all 0.4s ease" }} />
+          <img src="/logo-novalis1.png" alt="Novalis Menuiserie Montbéliard - Fenêtres Portes Volets" style={{ height: scrolled ? 50 : 130, width: "auto", transition: "all 0.4s ease" }} />
         </div>
 
         <nav className="desktop-nav" style={{ display: "flex", alignItems: "center", gap: 48 }}>
@@ -239,7 +239,7 @@ function Footer({ setPage }) {
       <div style={{ maxWidth: 1240, margin: "0 auto" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 48, marginBottom: 56 }}>
           <div>
-            <img src="/logo-novalis.png" alt="Novalis" style={{ height: 100, width: "auto", marginBottom: 20 }} />
+            <img src="/logo-novalis.png" alt="Novalis Fermeture Menuiserie - Artisan local Montbéliard" style={{ height: 100, width: "auto", marginBottom: 20 }} />
             <p style={{ fontSize: 14, opacity: 0.6, lineHeight: 1.8 }}>
               Spécialiste de la menuiserie et des fermetures sur mesure. Installation et rénovation dans le Pays de Montbéliard et alentours.
             </p>
@@ -301,9 +301,9 @@ function PageAccueil({ setPage }) {
   }, []);
 
   const expertises = [
-    { title: "Fenêtres & Baies vitrées", desc: "PVC, aluminium, sur mesure. Maximisez la lumière naturelle et l'isolation de votre habitat avec des menuiseries haute performance.", items: ["Fenêtres PVC", "Fenêtres aluminium", "Baies vitrées", "Sur mesure"], img: "/menuiserie-montbeliard.jpg" },
-    { title: "Portes & Portails", desc: "Porte d'entrée, portail aluminium, motorisation. Sécurisez et embellissez les accès de votre maison.", items: ["Portes d'entrée", "Portails aluminium", "Motorisation", "Clôtures"], img: "/pose-fenetre-besançon.webp" },
-    { title: "Volets & Fermetures", desc: "Volets roulants, volets battants, stores. Protégez-vous du soleil, du froid et des regards indiscrets.", items: ["Volets roulants", "Volets battants", "Stores", "Moustiquaires"], img: "/pose-fenetre-mulhouse.jpg" },
+    { title: "Fenêtres & Baies vitrées", desc: "PVC, aluminium, sur mesure. Maximisez la lumière naturelle et l'isolation de votre habitat avec des menuiseries haute performance.", items: ["Fenêtres PVC", "Fenêtres aluminium", "Baies vitrées", "Sur mesure"], img: "/menuiserie-montbeliard.jpg", alt: "Installation fenêtre PVC menuisier Montbéliard" },
+    { title: "Portes & Portails", desc: "Porte d'entrée, portail aluminium, motorisation. Sécurisez et embellissez les accès de votre maison.", items: ["Portes d'entrée", "Portails aluminium", "Motorisation", "Clôtures"], img: "/pose-fenetre-besançon.webp", alt: "Pose porte entrée et portail aluminium Belfort" },
+    { title: "Volets & Fermetures", desc: "Volets roulants, volets battants, stores. Protégez-vous du soleil, du froid et des regards indiscrets.", items: ["Volets roulants", "Volets battants", "Stores", "Moustiquaires"], img: "/pose-fenetre-mulhouse.jpg", alt: "Installation volets roulants Héricourt" },
   ];
 
 
@@ -422,7 +422,7 @@ function PageAccueil({ setPage }) {
                 onMouseLeave={ev => { ev.currentTarget.style.transform = ""; ev.currentTarget.style.boxShadow = ""; }}
               >
                 <div style={{ height: 180, borderRadius: "16px 16px 0 0", overflow: "hidden", marginBottom: 20, margin: "-40px -32px 20px -32px", background: C.lightBg }}>
-                  <img src={e.img} alt={e.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} onError={ev => ev.target.style.display = "none"} />
+                  <img src={e.img} alt={e.alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} onError={ev => ev.target.style.display = "none"} />
                 </div>
                 <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 24, color: C.navy, marginBottom: 12 }}>{e.title}</h3>
                 <p style={{ color: C.textMed, fontSize: 15, lineHeight: 1.7, marginBottom: 20 }}>{e.desc}</p>
@@ -746,7 +746,7 @@ function PageAPropos({ setPage }) {
               </p>
             </div>
             <div style={{ borderRadius: 24, height: 480, position: "relative", overflow: "hidden", background: C.lightBg }}>
-              <img src="/fermeture-hericourt.jpg" alt="Camion Novalis Fermeture & Menuiserie" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <img src="/fermeture-hericourt.jpg" alt="Camion Novalis menuisier Montbéliard Belfort Héricourt" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", top: 20, right: 20, background: C.accent, color: C.white, borderRadius: 12, padding: "12px 20px", fontWeight: 700, fontSize: 14, display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ fontSize: 16 }}>✓</span> Pose professionnelle
               </div>
