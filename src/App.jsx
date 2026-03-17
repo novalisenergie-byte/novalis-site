@@ -729,9 +729,9 @@ function PageAPropos({ setPage }) {
         </div>
       </section>
 
-      <section style={{ padding: "100px 32px", background: C.white }}>
+      <section className="apropos-section" style={{ padding: "100px 32px", background: C.white }}>
         <div style={{ maxWidth: 1240, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+          <div className="apropos-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
             <div>
               <SectionLabel>Notre histoire</SectionLabel>
               <SectionTitle>L'expertise au service de votre habitat</SectionTitle>
@@ -745,9 +745,9 @@ function PageAPropos({ setPage }) {
                 Notre engagement : des solutions sur mesure, performantes et esthétiques, avec un rapport qualité-prix irréprochable.
               </p>
             </div>
-            <div style={{ borderRadius: 24, height: 480, position: "relative", overflow: "hidden", background: C.lightBg }}>
-              <img src="/fermeture-hericourt.jpg" alt="Camion Novalis menuisier Montbéliard Belfort Héricourt" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              <div style={{ position: "absolute", top: 20, right: 20, background: C.accent, color: C.white, borderRadius: 12, padding: "12px 20px", fontWeight: 700, fontSize: 14, display: "flex", alignItems: "center", gap: 8 }}>
+            <div className="apropos-image" style={{ borderRadius: 24, height: 480, position: "relative", overflow: "hidden", background: C.lightBg }}>
+              <img src="/fermeture-hericourt.jpg" alt="Camion Novalis menuisier Montbéliard Belfort Héricourt" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+              <div className="apropos-badge" style={{ position: "absolute", top: 20, right: 20, background: C.accent, color: C.white, borderRadius: 12, padding: "12px 20px", fontWeight: 700, fontSize: 14, display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ fontSize: 16 }}>✓</span> Pose professionnelle
               </div>
             </div>
@@ -1764,6 +1764,30 @@ export default function NovalisSite() {
           }
           .contact-sidebar {
             order: -1;
+          }
+          /* Page À propos responsive */
+          .apropos-grid {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+          .apropos-image {
+            height: 300px !important;
+            order: -1;
+          }
+          .apropos-section {
+            padding: 60px 20px !important;
+          }
+        }
+        @media (max-width: 500px) {
+          .apropos-image {
+            height: 250px !important;
+            border-radius: 16px !important;
+          }
+          .apropos-badge {
+            top: 12px !important;
+            right: 12px !important;
+            padding: 8px 14px !important;
+            font-size: 12px !important;
           }
         }
       `}</style>
