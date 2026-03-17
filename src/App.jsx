@@ -1657,10 +1657,34 @@ function PageFAQ({ setPage }) {
 /* ========== APP PRINCIPAL ========== */
 
 export default function NovalisSite() {
-  const [page, setPage] = useState("accueil");
+  // Fonction pour lire la page depuis l'URL
+  const getPageFromURL = () => {
+    const path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
+    const validPages = ['accueil', 'services', 'apropos', 'contact', 'avis', 'faq', 'mentions', 'confidentialite', 
+      'menuisier-montbeliard', 'menuisier-belfort', 'menuisier-besancon', 'menuisier-mulhouse', 'menuisier-hericourt', 'menuisier-delle'];
+    return validPages.includes(path) ? path : 'accueil';
+  };
+
+  const [page, setPageState] = useState(getPageFromURL());
   const [scrolled, setScrolled] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const lastScrollY = useRef(0);
+
+  // Fonction setPage qui met à jour l'URL
+  const setPage = (newPage) => {
+    const url = newPage === 'accueil' ? '/' : `/${newPage}`;
+    window.history.pushState({}, '', url);
+    setPageState(newPage);
+  };
+
+  // Écouter les changements d'URL (bouton retour/avancer du navigateur)
+  useEffect(() => {
+    const handlePopState = () => {
+      setPageState(getPageFromURL());
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   useEffect(() => {
     const h = () => {
