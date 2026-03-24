@@ -36,6 +36,11 @@ const SEO_DATA = {
     title: "FAQ | Questions Fréquentes - Novalis Menuiserie Montbéliard",
     description: "Toutes les réponses à vos questions : devis, délais, garanties, aides financières, zones d'intervention. Novalis Menuiserie vous accompagne.",
     keywords: "faq menuiserie, questions menuisier, devis gratuit, garantie fenêtre, aide rénovation, maprimerénov"
+  },
+  merci: {
+    title: "Merci pour votre demande | Novalis Menuiserie",
+    description: "Votre demande de devis a bien été reçue. L'équipe Novalis Fermeture & Menuiserie vous recontacte sous 24h.",
+    keywords: "novalis menuiserie, devis gratuit, menuisier montbéliard"
   }
 };
 
@@ -808,7 +813,7 @@ function PageAPropos({ setPage }) {
 
 /* ========== PAGE CONTACT ========== */
 
-function PageContact() {
+function PageContact({ setPage }) {
   const [form, setForm] = useState({ nom: "", tel: "", email: "", ville: "", projet: "", message: "" });
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
@@ -830,12 +835,7 @@ function PageContact() {
           message: form.message || "Aucun message"
         })
       });
-      setSent(true);
-      
-      // Google Ads Conversion Tracking
-      if (typeof gtag === 'function') {
-        gtag('event', 'conversion', {'send_to': 'AW-18018955994/IdfUCLT5x4ocENrljZBD'});
-      }
+      setPage('merci');
     } catch (err) {
       alert("Erreur lors de l'envoi. Veuillez réessayer.");
     }
@@ -1661,11 +1661,141 @@ function PageFAQ({ setPage }) {
 
 /* ========== APP PRINCIPAL ========== */
 
+/* ========== PAGE MERCI ========== */
+
+function PageMerci() {
+  useEffect(() => {
+    // Déclenche la conversion Google Ads sur la page /merci
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'conversion', {
+        send_to: 'AW-18018955994/IdfUCLT5x4ocENrljZBD'
+      });
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <>
+      {/* Hero sobre */}
+      <section style={{
+        background: `linear-gradient(135deg, ${C.navy} 0%, #1A3A5C 100%)`,
+        padding: "180px 32px 90px",
+        textAlign: "center"
+      }}>
+        <SectionLabel>Confirmation</SectionLabel>
+        <h1 style={{
+          fontFamily: "'DM Serif Display', serif",
+          fontSize: 48,
+          color: C.white,
+          marginBottom: 16
+        }}>
+          Votre demande est envoyée !
+        </h1>
+        <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 18, maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
+          Merci pour votre confiance. Notre équipe vous recontacte sous 24h.
+        </p>
+      </section>
+
+      {/* Carte centrale */}
+      <section style={{ padding: "80px 32px", background: C.lightBg }}>
+        <div style={{ maxWidth: 680, margin: "0 auto" }}>
+          <div style={{
+            background: C.white,
+            borderRadius: 20,
+            padding: "52px 48px",
+            boxShadow: "0 4px 30px rgba(0,0,0,0.06)",
+            border: `1px solid ${C.border}`,
+            textAlign: "center"
+          }}>
+            {/* Icône check */}
+            <div style={{
+              width: 80, height: 80,
+              background: "#E8F5E9",
+              borderRadius: "50%",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              margin: "0 auto 28px"
+            }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                <path d="M5 13L9 17L19 7" stroke="#2D8F4E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+
+            <h2 style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: 28, color: C.navy, marginBottom: 14
+            }}>
+              Merci, {" "}
+              <span style={{ color: C.accent }}>nous avons bien reçu votre message</span>
+            </h2>
+
+            <p style={{ fontSize: 16, color: C.textMed, lineHeight: 1.8, marginBottom: 8 }}>
+              Un conseiller <strong>Novalis Fermeture & Menuiserie</strong> va étudier votre projet
+              et vous recontacter dans les <strong>24 heures</strong>.
+            </p>
+            <p style={{ fontSize: 15, color: C.textLight, marginBottom: 40 }}>
+              Si votre besoin est urgent, appelez-nous directement :
+            </p>
+
+            {/* Bouton appel */}
+            <a
+              href="tel:0363110467"
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+                background: C.navy, color: C.white,
+                padding: "16px 32px", borderRadius: 50,
+                fontWeight: 700, fontSize: 17, textDecoration: "none",
+                marginBottom: 16,
+                transition: "background 0.3s"
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = C.navyLight}
+              onMouseLeave={e => e.currentTarget.style.background = C.navy}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+              </svg>
+              03 63 11 04 67
+            </a>
+
+            {/* Étapes suivantes */}
+            <div style={{
+              background: C.lightBg,
+              borderRadius: 14,
+              padding: "24px 28px",
+              marginTop: 32,
+              textAlign: "left"
+            }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: C.textLight, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>
+                La suite de votre projet
+              </p>
+              {[
+                { num: "01", text: "Nous analysons votre demande" },
+                { num: "02", text: "Un conseiller vous rappelle sous 24h" },
+                { num: "03", text: "Visite gratuite & devis détaillé" },
+                { num: "04", text: "Pose professionnelle garantie" },
+              ].map((s, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: i < 3 ? 12 : 0 }}>
+                  <span style={{
+                    minWidth: 32, height: 32,
+                    background: C.accentLight, color: C.accent,
+                    borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                    fontWeight: 700, fontSize: 13
+                  }}>{s.num}</span>
+                  <span style={{ fontSize: 15, color: C.text }}>{s.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
 export default function NovalisSite() {
   // Fonction pour lire la page depuis l'URL
   const getPageFromURL = () => {
     const path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
-    const validPages = ['accueil', 'services', 'apropos', 'contact', 'avis', 'faq', 'mentions', 'confidentialite', 
+    const validPages = ['accueil', 'services', 'apropos', 'contact', 'avis', 'faq', 'mentions', 'confidentialite', 'merci',
       'menuisier-montbeliard', 'menuisier-belfort', 'menuisier-besancon', 'menuisier-mulhouse', 'menuisier-hericourt', 'menuisier-delle'];
     return validPages.includes(path) ? path : 'accueil';
   };
@@ -1829,7 +1959,8 @@ export default function NovalisSite() {
         {page === "services" && <PageServices setPage={setPage} />}
         {page === "apropos" && <PageAPropos setPage={setPage} />}
         {page === "faq" && <PageFAQ setPage={setPage} />}
-        {page === "contact" && <PageContact />}
+        {page === "contact" && <PageContact setPage={setPage} />}
+        {page === "merci" && <PageMerci />}
         {page === "avis" && <PageAvis setPage={setPage} />}
         {page === "mentions" && <PageMentions />}
         {page === "confidentialite" && <PageConfidentialite />}
